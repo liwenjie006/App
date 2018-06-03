@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -60,6 +62,7 @@ public class Menu extends Base {
 	/** 上级菜单 */
 	@ManyToOne(cascade=CascadeType.REFRESH)
 	@JoinColumn(name="TOP_MENU_CD")
+	@JsonIgnore
 	private Menu topMenu;
 
 	/** 下级菜单 */

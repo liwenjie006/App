@@ -108,8 +108,6 @@ public class AppWeb {
 	 */
 	@RequestMapping(value="/mainMenu", method=RequestMethod.POST)
 	public @ResponseBody List<Menu> mainMenu(@SessionAttribute("sa_account") Account account) throws Exception {
-		logUtil.print(accountService.getMenu(account));
-		
 		return accountService.getMenu(account);
 	}
 	

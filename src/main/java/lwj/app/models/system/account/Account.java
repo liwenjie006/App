@@ -17,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -104,6 +106,7 @@ public class Account extends Base {
 			name="SYS_ACCOUNT_X_ROLE",
 			joinColumns=@JoinColumn(name="accountCd"),
 			inverseJoinColumns=@JoinColumn(name="roleCd"))
+	@JsonIgnore
 	private Set<Role> roles;
 	
 	/** 菜单集合 */
@@ -112,6 +115,7 @@ public class Account extends Base {
 			name="SYS_ACCOUNT_X_MENU",
 			joinColumns=@JoinColumn(name="accountCd"),
 			inverseJoinColumns=@JoinColumn(name="menuCd"))
+	@JsonIgnore
 	private List<Menu> menus;
 
 }
