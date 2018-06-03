@@ -1,0 +1,10 @@
+@CHARSET "UTF-8";
+html, body {
+	background-color: #f0f0f0;
+	color: #606266;
+	width: 100%;
+	min-width: 1600px;
+}
+.contain {
+
+}

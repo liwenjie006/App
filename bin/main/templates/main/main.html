@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Study demo" />
+    <meta name="author" content="lf" />
+
+	<title>App</title>
+
+	<!-- 引入样式 -->
+	<link rel="stylesheet" type="text/css" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+	<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_226046_ud7r7if5kyajdcxr.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/normalize.css"/>
+	<link rel="stylesheet" type="text/css" href="/css/main.css"/>
+
+	<!-- 全局变量设置 -->
+	<script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        var appMsg = {
+            loadingMsg: [[#{请求处理中}]],
+            systemAlterTitle: [[#{系统提示}]],
+            systemAlterButton: [[#{返回登录界面}]],
+            systemAlterTimeoutMsg: [[#{服务器连接超时，请重新登录}]],
+            systemAlterNoPermissionsMsg: [[#{您因权限不足，无法访问该资源}]]
+        }
+
+        var appCsrf = {
+            csrf_parameter: [[${_csrf.parameterName}]],
+            csrf_header: [[${_csrf.headerName}]],
+            csrf_token: [[${_csrf.token}]]
+        }
+        /*]]>*/
+	</script>
+
+	<!-- 引入组件库 -->
+	<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script type="text/javascript" src="/js/axiosUtil.js"></script>
+
+</head>
+<body>
+	<div id="app" class="contain">
+		<el-container>
+			<el-header></el-header>
+
+			<el-container>
+				<el-aside width="200px">
+					<el-menu>
+						<el-submenu index="pmenu.menu_cd" v-for="pmenu in menuList" :key="pmenu.menu_cd">
+							<template slot="title">
+								<i class="el-icon-location"></i>
+								<span>{{ pmenu.menu_nm }}</span>
+							</template>
+							<el-menu-item index="menu.menu_cd" v-for="menu in pmenu.smenu" :key="menu.menu_cd">{{ menu.menu_nm }}</el-menu-item>
+						</el-submenu>
+					</el-menu>
+				</el-aside>
+
+				<el-main>
+
+				</el-main>
+			</el-container>
+		</el-container>
+
+
+		<!--<div id="leftMenu" class="leftMenu menu white">-->
+			<!--<div class="menu-header">-->
+				<!--<div class="input-group">-->
+					<!--<input type="text" class="form-control input-sm" />-->
+					<!--<span class="input-group-btn">-->
+						<!--<button class="btn btn-default btn-sm" type="button">Search</button>-->
+					<!--</span>-->
+				<!--</div>-->
+			<!--</div>-->
+			<!--<ul id="menu-list"></ul>-->
+			<!--<div class="menu-footer">Footer</div>-->
+		<!--</div>-->
+
+		<!--&lt;!&ndash; Content &ndash;&gt;-->
+    	<!--<div id="content" class="content">-->
+    		<!--<div class="panel-body">-->
+    			<!--&lt;!&ndash; Nav tabs &ndash;&gt;-->
+				<!--<ul class="nav-my-tab">-->
+					<!--<li class="leftbackward" onselectstart="return false;">-->
+						<!--<i class="glyphicon glyphicon-backward" ></i>-->
+					<!--</li>-->
+					<!--<li class="middletab">-->
+						<!--<ul id="tab_title" class="nav nav-tabs"></ul>-->
+					<!--</li>-->
+					<!--<li class="rightforward" onselectstart="return false;">-->
+						<!--<i class="glyphicon glyphicon-forward" ></i>-->
+					<!--</li>-->
+				<!--</ul>-->
+                <!--&lt;!&ndash; Tab panes &ndash;&gt;-->
+                <!--<div id="tab_contents" class="tab-content"></div>-->
+            <!--</div>-->
+    	<!--</div>-->
+
+    </div>
+
+	<script type="text/javascript" th:inline="javascript">
+		/*<![CDATA[*/
+		var loading = null;
+        var vue = new Vue({
+            el: '#app',
+            data: {
+                menuList: null
+            },
+            beforeCreate: function () {
+                // 初始化Loading
+                loading = this.$loading({
+                    lock: true,
+                    text: appMsg.loadingMsg,
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+
+				// 取得菜单
+                axiosUtil.post("/mainMenu", null, function (result) {
+                    vue.menuList = result;
+                    loading.close();
+                });
+            }
+
+        });
+        /*]]>*/
+	</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Study demo" />
+    <meta name="author" content="lf" />
+    
+    <meta name="_csrf_parameter" th:content="${_csrf.parameterName}"/>
+	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+	<meta name="_csrf_token" th:content="${_csrf.token}"/>
+</head>
+
+<body>
+	<!-- 引入CSS -->
+	<div th:include="main/import :: css"></div>
+	
+	<form id="saveForm" action="/user/save" method="post" enctype="multipart/form-data" onsubmit="return false;">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		
+		<table class="input3" style="margin-top: 50px;">
+			<tr>
+				<th><label for="accountId" th:text="#{帐号ID}"></label></th>
+				<td>
+					<input name="accountId" type="text" maxlength="15" class="form-control input-sm" th:placeholder="#{帐号ID}" />
+					<div id="popoverAccountId" class="popover fade top in" style="top: 15px; left: 240.5px; display: none;">
+						<div class="arrow" style="left: 50%;"></div>
+						<div class="popover-content">
+							<span id="exist" style="display: none;"><i class="glyphicon glyphicon-info-sign"></i> [[#{您输入的帐号ID已存在}]]</span>
+							<span id="ok" style="display: none;"><i class="glyphicon glyphicon-ok-sign"></i> [[#{您输入的帐号ID可以使用}]]</span>
+						</div>
+					</div>
+				</td>
+				<th><label for="accountNm" th:text="#{用户名称}"></label></th>
+				<td><input name="accountNm" type="text" maxlength="15" class="form-control input-sm" th:placeholder="#{用户名称}" /></td>
+				<td rowspan="5" colspan="2" align="center">
+					<img id="userPhotoImgFileTmp" alt="导入相片" style="border: thin black solid;"
+						src="/img/open_folder.png" width="130px" height="160px" onclick="javascript: $('#userPhotoImgFile').trigger('click');"/>
+					<input type="file" id="userPhotoImgFile" name="userPhotoImgFile" hidden="true" style="display: none;"
+						accept="image/*" onchange="javascript: util.setPhoto(this, 'userPhotoImgFileTmp');"/>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="accountPw" th:text="#{密码}"></label></th>
+				<td><input name="accountPw" type="password" maxlength="100" class="form-control input-sm" th:placeholder="#{密码}" /></td>
+				<th><label for="accountConfirmPw" th:text="#{确认密码}"></label></th>
+				<td><input name="accountConfirmPw" type="password" maxlength="100" class="form-control input-sm" th:placeholder="#{确认密码}" /></td>
+			</tr>
+			<tr>
+				<th><label for="userBirthday" th:text="#{生日}"></label></th>
+				<td>
+					<div class="input-group" data-ax5picker="basic">
+			            <input name="userBirthday" type="text" class="form-control input-sm" placeholder="yyyy-mm-dd" />
+			            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+			        </div>
+				
+				</td>
+			</tr>
+			<tr>
+				<th><label th:text="#{是否锁定}"></label></th>
+				<td>
+					<label class="radio-inline"><input type="radio" name="nonLocked" value="1" />[[#{是}]]</label>
+					<label class="radio-inline"><input type="radio" name="nonLocked" value="0" checked="checked" />[[#{否}]]</label>
+				</td>
+				<th><label th:text="#{是否过期}"></label></th>
+				<td>
+					<label class="radio-inline"><input type="radio" name="nonExpired" value="1" />[[#{是}]]</label>
+					<label class="radio-inline"><input type="radio" name="nonExpired" value="0" checked="checked" />[[#{否}]]</label>
+				</td>
+			</tr>
+			<tr>
+				<th><label th:text="#{凭证是否过期}"></label></th>
+				<td>
+					<label class="radio-inline"><input type="radio" name="credentialsNonExpired" value="1" />[[#{是}]]</label>
+					<label class="radio-inline"><input type="radio" name="credentialsNonExpired" value="0" checked="checked" />[[#{否}]]</label>
+				</td>
+				<th><label th:text="#{是否可用}"></label></th>
+				<td>
+					<label class="radio-inline"><input type="radio" name="enabled" value="1" checked="checked" />[[#{是}]]</label>
+					<label class="radio-inline"><input type="radio" name="enabled" value="0" />[[#{否}]]</label>
+				</td>
+			</tr>
+			<tr>
+				<th><label th:text="#{描述}"></label></th>
+				<td colspan="3"><textarea class="form-control" name="userDesc" rows="3"></textarea></td>
+			</tr>
+		</table>
+	</form>
+	
+	<!-- 按钮组 -->
+	<div class="input_buttons">
+		<button id="btn_search" type="button" class="btn btn-default btn-sm" onclick="save();">
+			<span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+			<span th:text="#{保存}"></span>
+		</button>
+		<button id="btn_add" type="button" class="btn btn-default btn-sm" onclick="util.getModel().close();">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+			<span th:text="#{关闭}"></span>
+		</button>
+	</div>
+	
+	<!-- 引入JS -->
+    <div th:include="main/import :: js"></div>
+    
+	<script type="text/javascript">
+	/*<![CDATA[*/
+		var title = "[[#{用户登录}]]";
+		/* 设置高度，宽度 */
+		util.setModelWH(40);
+		
+		util.initDatePicker($('[data-ax5picker="basic"]'), "left");
+		
+		/* 检查输入的ID 是否重复 */
+		$('[name=accountId]').keyup(function() {
+			ajax.post('/user/idIsExist', { accountId: this.value }, function (data) {
+				$("#popoverAccountId").css('display', 'inline');
+				if ('Y' == data.result) {
+					$("#exist").css('display', 'inline');
+					$("#ok").css('display', 'none');
+				} else {
+					$("#exist").css('display', 'none');
+					$("#ok").css('display', 'inline');
+				}
+			}, false);
+		});
+		
+		/* 保存 */
+		function save() {
+			if (check()) return false;
+			
+			ajax.ajaxSubmit('saveForm', function (data) {
+				if (0 != data.accountCd) {
+					util.alert(title, '[[#{保存成功}]]', '[[#{确认}]]', function (result) {
+						util.getModel().close();
+					});
+				} else {
+					util.alert(title, '[[#{保存失败，服务器发生异常！}]]', '[[#{确认}]]');
+				}
+			});
+		}
+		
+		/* 检查输入项 */
+		function check() {
+			if ($('[name=accountId]').val().trim() == '') {
+				util.alert(title, '[[#{请输入}]][[#{帐号ID}]]', '[[#{确认}]]', function () {
+					$('[name=accountId]').focus();	
+				});
+				return true;
+			}
+			if ($('[name=accountNm]').val().trim() == '') {
+				util.alert(title, '[[#{请输入}]][[#{用户名称}]]', '[[#{确认}]]', function () {
+					$('[name=accountNm]').focus();	
+				});
+				return true;
+			}
+			if ($('[name=accountPw]').val().trim() == '') {
+				util.alert(title, '[[#{请输入}]][[#{密码}]]', '[[#{确认}]]', function () {
+					$('[name=accountPw]').focus();	
+				});
+				return true;
+			}
+			if ($('[name=accountConfirmPw]').val().trim() == '') {
+				util.alert(title, '[[#{请输入}]][[#{确认密码}]]', '[[#{确认}]]', function () {
+					$('[name=accountConfirmPw]').focus();	
+				});
+				return true;
+			}
+			if ($('[name=accountPw]').val().trim() != $('[name=accountConfirmPw]').val().trim()) {
+				util.alert(title, '[[#{密码和确认密码不一致！}]]', '[[#{确认}]]', function () {
+					$('[name=accountPw]').focus();	
+				});
+				return true;
+			}
+			
+			return false;
+		}
+	/*]]>*/
+	</script>
+</body>
+</html>
