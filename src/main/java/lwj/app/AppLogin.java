@@ -59,7 +59,7 @@ public class AppLogin {
 		// 取得登录信息
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
-		Account account = accountService.findOneAccountByAccountId(userDetails.getUsername());
+		Account account = accountService.findOneByAccountId(userDetails.getUsername());
 		
 		history.setSessionId(webAuthenticationDetails.getSessionId());	// 使用Spring security时生成的SessionId更HttpSession里的不一样
 		history.setLogMsg("Login success!");

@@ -2,6 +2,7 @@ package lwj.app.models;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -34,8 +35,8 @@ public abstract class BaseService<T extends Base> {
 	 * @param Serializable id
 	 * @return Base
 	 */
-	public T findOne(Serializable id) throws Exception {
-		return repository.getOne(id);
+	public Optional<T> findOne(Serializable id) throws Exception {
+		return repository.findById(id);
 	};
 	
 	/**

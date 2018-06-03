@@ -2,6 +2,7 @@ package lwj.app.models.system.account;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
@@ -71,6 +72,17 @@ public class AccountRepositoryTest {
 		
 		assertThat(result).isNotNull();
 		assertThat(result.getAccountId()).isEqualTo(id);
+	}
+	
+	/**
+	 * 测试通过邮箱取得帐号信息
+	 */
+	@Test
+	public void testFindByAccountIdOrAccountNmOrEnabledOrderByAccountId() {
+		List<Account> result = repository.findByAccountIdOrAccountNmOrEnabledOrderByAccountId("admin", "超级管理员", true);
+		
+		assertThat(result).isNotNull();
+		assertThat(result).asList();
 	}
 
 }

@@ -1,6 +1,7 @@
 package lwj.app.models.system.account;
 
 import java.io.Serializable;
+import java.util.List;
 
 import lwj.app.models.BaseRepository;
 
@@ -31,5 +32,14 @@ public interface AccountRepository extends BaseRepository<Account, Serializable>
 	 * @return 帐号
 	 */
 	public Account findOneByEmail(String email);
+	
+	/**
+	 * 通过账户ID，账户名称，使用与否查询对应账户信息列表
+	 * @param accountId
+	 * @param accountNm
+	 * @param enabled
+	 * @return 账户列表
+	 */
+	public List<Account> findByAccountIdOrAccountNmOrEnabledOrderByAccountId(String accountId, String accountNm, boolean enabled);
 	
 }

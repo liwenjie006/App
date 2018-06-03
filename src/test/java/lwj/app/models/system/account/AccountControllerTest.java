@@ -1,5 +1,6 @@
-package lwj.app;
+package lwj.app.models.system.account;
 
+import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -22,18 +23,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import lwj.app.models.system.account.Account;
-
-/**
- * 测试Web主函数
- * @author LF
- *
- */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class AppWebTest {
+public class AccountControllerTest {
 
 	@Resource
 	private MockMvc mvc;
@@ -58,23 +52,18 @@ public class AppWebTest {
 				.apply(springSecurity())
 				.build();
     }
-
+    
     @Test
 	@WithAnonymousUser
-	public void testHome() throws Exception {
-		mvc.perform(get("/").accept(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
+	public void testRead() throws Exception {
+    	mvc.perform(get("/account").with(csrf().asHeader()).session(this.session)
+				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(status().isOk());
 	}
-	
-	@Test
+    
+    @Test
 	@WithAnonymousUser
-	public void testCss() throws Exception {
-		mvc.perform(get("/css/main.css").accept(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
-	}
-
-	@Test
-    @WithAnonymousUser
-	public void testMenu() throws Exception {
-		mvc.perform(post("/mainMenu").with(csrf().asHeader()).session(this.session)
+	public void testGet() throws Exception {
+    	mvc.perform(get("/account/1").with(csrf().asHeader()).session(this.session)
 				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(status().isOk());
 	}
 

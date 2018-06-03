@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +35,9 @@ import lwj.app.models.system.resource.Resource;
 @ToString(callSuper=false, exclude={ "topMenu", "subMenu" })
 public class Menu extends Base {
 
+	public interface TopMenuView {};
+	public interface SubMenuView {};
+	
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -62,11 +65,12 @@ public class Menu extends Base {
 	/** 上级菜单 */
 	@ManyToOne(cascade=CascadeType.REFRESH)
 	@JoinColumn(name="TOP_MENU_CD")
-	@JsonIgnore
+	@JsonView(TopMenuView.class)
 	private Menu topMenu;
 
 	/** 下级菜单 */
 	@OneToMany(cascade= { CascadeType.REFRESH, CascadeType.REMOVE }, mappedBy="topMenu")
+	@JsonView(SubMenuView.class)
 	private List<Menu> subMenu;
 
 	@OneToOne(cascade= { CascadeType.REFRESH })

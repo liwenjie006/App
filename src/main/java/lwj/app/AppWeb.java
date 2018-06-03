@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lwj.app.models.business.menu.Menu;
+import lwj.app.models.business.menu.Menu.SubMenuView;
 import lwj.app.models.system.account.Account;
 import lwj.app.models.system.account.AccountService;
 import lwj.app.utils.system.LogUtil;
@@ -107,6 +110,7 @@ public class AppWeb {
 	 * @return
 	 */
 	@RequestMapping(value="/mainMenu", method=RequestMethod.POST)
+	@JsonView(SubMenuView.class)
 	public @ResponseBody List<Menu> mainMenu(@SessionAttribute("sa_account") Account account) throws Exception {
 		return accountService.getMenu(account);
 	}

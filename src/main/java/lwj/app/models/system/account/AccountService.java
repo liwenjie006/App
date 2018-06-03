@@ -28,7 +28,7 @@ public class AccountService extends BaseService<Account> {
 	 * @param accountId
 	 * @return Account
 	 */
-	public Account findOneAccountByAccountId(String accountId) {
+	public Account findOneByAccountId(String accountId) {
 		return accountRepository.findOneByAccountId(accountId);
 	}
 	
@@ -42,8 +42,15 @@ public class AccountService extends BaseService<Account> {
 		return account.getMenus();
 	}
 	
-	public List<Account> read() {
-		return accountRepository.findAll();
+	/**
+	 * 通过账户ID，账户名称，使用与否查询对应账户信息列表
+	 * @param accountId
+	 * @param accountNm
+	 * @param enabled
+	 * @return 账户列表
+	 */
+	public List<Account> read(String accountId, String accountNm, boolean enabled) {
+		return accountRepository.findByAccountIdOrAccountNmOrEnabledOrderByAccountId(accountId, accountNm, enabled);
 	}
 	
 }
