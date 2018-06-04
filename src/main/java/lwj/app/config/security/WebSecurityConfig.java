@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +12,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
@@ -24,9 +24,6 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Autowired
-    private UserDetailsService appUserDetailService;
-	
 	@Autowired
     private AppAccessDecisionManager appAccessDecisionManager;
 	
@@ -42,26 +39,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// 设置访问权限
-		http.authorizeRequests()
-			.accessDecisionManager(appAccessDecisionManager)	// 权限具体处理类
-			.anyRequest().authenticated()						// 其他路径都都检测
-			.and()
-			.exceptionHandling()
-			.accessDeniedPage("/error/notPermissions");			// 权限异常时访问的路径
-		
 		// 设置登录界面属性
 		http.formLogin()
-			.loginPage("/v/main/login").permitAll()	// 登录界面地址
+			.loginPage("/v/main/login").permitAll()		// 登录界面地址
 			.usernameParameter("accountId")				// 自定义登录界面ID
 			.passwordParameter("accountPw")				// 自定义登录界面密码
-			.loginProcessingUrl("/loginDo")				// 登录事件地址
+			.loginProcessingUrl("/login")				// 登录事件地址
 			.defaultSuccessUrl("/loginSuccess")			// 登录成功时调用的地址
 			.failureUrl("/loginFailure");				// 登录失败时调用的地址
 		
 		// 设置登出属性
 		http.logout()
-			.logoutUrl("/logout").permitAll()		// 登出地址
+			.logoutUrl("/logout").permitAll()		// 退出地址
+			.logoutSuccessUrl("/v/main/login")		// 退出成功后显示登录界面
+			.deleteCookies("JSESSIONID")			// 退出成功后删除Cookies
 			.invalidateHttpSession(true);			// 登出时清空Session
 		
 		// 设置 Session
@@ -70,20 +61,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionFixation().newSession()			// 登录成功后用新的Session
 			.maximumSessions(1)						// 同时存在的Session数量设置为1
 			.sessionRegistry(sessionRegistry());	// 注册Session监听器
-
-		// Iframe 设置
-		http.headers().frameOptions().sameOrigin();
+		
+		// 设置访问权限
+		http.authorizeRequests()
+			.accessDecisionManager(appAccessDecisionManager)	// 权限具体处理类
+			.anyRequest().authenticated()						// 其他路径都都检测
+			.and()
+			.exceptionHandling()
+			.accessDeniedPage("/error/notPermissions");			// 权限异常时访问的路径
+		
 	}
 
-	/**
-	 * 设置登陆时用户信息提取类
-	 * 设置密码形式
-	 */
-	@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(appUserDetailService).passwordEncoder(new BCryptPasswordEncoder(16));
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
-
+	
 	/**
 	 * Spring Security 想要取到所有的Session信息需要注册SessionRegistry
 	 * @return SessionRegistry

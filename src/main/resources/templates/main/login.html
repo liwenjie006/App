@@ -81,7 +81,7 @@
         </div>
 
         <div class="login-panel">
-            <form action="/loginDo" method="post">
+            <form action="/login" method="post">
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
                 <el-input th:placeholder="#{帐号}" name="accountId" v-model="accountId" clearable="true" autofocus="true">
