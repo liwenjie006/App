@@ -3,8 +3,6 @@ package lwj.app;
 import java.io.File;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,36 +71,6 @@ public class AppWeb {
 		logUtil.print("into -> " + folder + File.separator + model + File.separator + model + "_" + type);
 		
 		return folder + File.separator + model + File.separator + model + "_" + type;
-	}
-	
-	/**
-	 * Session超时配置
-	 * @return
-	 */
-	@RequestMapping("/error/timeout")
-	public void timeout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getHeader("x-requested-with") != null
-				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // ajax 超时处理
-			response.getWriter().print("timeout");  //设置超时标识
-			response.getWriter().close();
-		} else {
-			response.sendRedirect("/");
-		}
-	}
-	
-	/**
-	 * 权限异常配置
-	 * @return error/notPermissions.html
-	 */
-	@RequestMapping("/error/notPermissions")
-	public void notPermissions(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		if (request.getHeader("x-requested-with") != null
-				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // ajax 超时处理
-			response.getWriter().print("not permissions");  //设置超时标识
-			response.getWriter().close();
-		} else {
-			response.sendRedirect("/error/error");
-		}
 	}
 	
 	/**

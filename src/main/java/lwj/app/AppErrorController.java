@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,7 @@ public class AppErrorController extends AbstractErrorController {
 
 	@Override
 	public String getErrorPath() {
-		return null;
+		return "error";
 	}
 	
 	/**
@@ -45,10 +44,10 @@ public class AppErrorController extends AbstractErrorController {
 	 */
 	@RequestMapping(produces = MediaType.TEXT_HTML_VALUE)
 	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
-		HttpStatus status = getStatus(request);
-		logUtil.print(status);
+		ModelAndView mav = new ModelAndView("error/error");
+		mav.addAllObjects(getErrorAttributes(request, false));
 		
-		return new ModelAndView("error/error");
+		return mav;
 	}
 
 	/**
@@ -63,17 +62,53 @@ public class AppErrorController extends AbstractErrorController {
 	}
 	
 	/**
-	 * 默认异常处理
-	 * @param request
-	 * @param response
-	 * @return
+	 * Session超时处理
 	 */
-	@RequestMapping
-	public ModelAndView errorDefault(HttpServletRequest request, HttpServletResponse response) {
-		HttpStatus status = getStatus(request);
-		logUtil.print(status);
-		
-		return new ModelAndView("error/error");
+	@RequestMapping("/timeout")
+	public void timeout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		if (request.getHeader("x-requested-with") != null
+				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // ajax 超时处理
+			response.getWriter().print("timeout"); // 设置超时标识
+			response.getWriter().close();
+		} else {
+			response.sendRedirect("/error/timeoutPage");
+		}
+	}
+	
+	/**
+	 * Session超时界面
+	 * 
+	 * @return error/timeout
+	 */
+	@RequestMapping("/timeoutPage")
+	public ModelAndView timeoutPage() throws Exception {
+		return new ModelAndView("error/timeout");
+	}
+
+	/**
+	 * 权限异常处理
+	 * 
+	 * @return error/notPermissions
+	 */
+	@RequestMapping("/notPermissions")
+	public void notPermissions(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		if (request.getHeader("x-requested-with") != null
+				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // ajax 超时处理
+			response.getWriter().print("not permissions"); // 设置超时标识
+			response.getWriter().close();
+		} else {
+			response.sendRedirect("/error/notPermissions");
+		}
+	}
+	
+	/**
+	 * 权限异常界面
+	 * 
+	 * @return error/notPermissions.html
+	 */
+	@RequestMapping("/notPermissionsPage")
+	public ModelAndView notPermissionsPage() throws Exception {
+		return new ModelAndView("error/notPermissions");
 	}
 
 }
