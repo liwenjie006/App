@@ -16,9 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -37,8 +37,8 @@ import lwj.app.models.system.role.Role;
 @Table(name="SYS_ACCOUNT")
 @Inheritance(strategy=InheritanceType.JOINED)
 @Data
-@EqualsAndHashCode(callSuper=false, exclude={ "roles" })
-@ToString(callSuper=false, exclude={ "roles" })
+@EqualsAndHashCode(callSuper=false, exclude={ "roles", "menus" })
+@ToString(callSuper=false, exclude={ "roles", "menus" })
 public class Account extends Base {
 
 	/** serialVersionUID. */
@@ -63,14 +63,17 @@ public class Account extends Base {
 
 	/** 登录ID */
 	@Column(length=50, unique=true, nullable=false)
+	@NotBlank(message="帐号ID不能为空")
 	private String accountId;
 
 	/** 登录密码 */
 	@Column(length=60, nullable=false)
+	@NotBlank(message="帐号密码不能为空")
 	private String accountPw;
 
 	/** 名 */
 	@Column(length=50, nullable=false)
+	@NotBlank(message="帐号名称不能为空")
 	private String accountNm;
 
 	/** 未锁定 */
@@ -87,10 +90,12 @@ public class Account extends Base {
 
 	/** 手机 */
 	@Column(length=20, unique=true, nullable=false)
+	@NotBlank(message="手机号码不能为空")
 	private String tel;
 	
 	/** 邮箱 */
 	@Column(length=200, unique=true, nullable=false)
+	@NotBlank(message="邮箱不能为空")
 	private String email;
 	
 	

@@ -49,7 +49,7 @@ public class AccountService extends BaseService<Account> {
 	 * @param enabled
 	 * @return 账户列表
 	 */
-	public List<Account> read(String accountId, String accountNm, boolean enabled) {
+	public List<Account> find(String accountId, String accountNm, boolean enabled) {
 		return accountRepository.findByAccountIdOrAccountNmOrEnabledOrderByAccountId(accountId, accountNm, enabled);
 	}
 	

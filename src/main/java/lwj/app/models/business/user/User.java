@@ -11,6 +11,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Past;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -48,6 +49,7 @@ public class User extends Account {
 	/** 生日 */
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Temporal(TemporalType.DATE)
+	@Past
 	private Date userBirthday;
 	
 	/** 部门 */

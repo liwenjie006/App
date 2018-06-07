@@ -3,9 +3,14 @@ package lwj.app.models.system.account;
 import static org.junit.Assert.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -29,6 +34,10 @@ import org.springframework.web.context.WebApplicationContext;
 @WithMockUser
 public class AccountControllerTest {
 
+	private String id = "junit-" + UUID.randomUUID();
+	private String tel = "01063138710";
+	private String email = "liwenjie006@gmail.com";
+	
 	@Resource
 	private MockMvc mvc;
 
@@ -55,7 +64,7 @@ public class AccountControllerTest {
     
     @Test
 	@WithAnonymousUser
-	public void testRead() throws Exception {
+	public void testFind() throws Exception {
     	mvc.perform(get("/account").with(csrf().asHeader()).session(this.session)
 				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(status().isOk());
 	}
@@ -65,6 +74,31 @@ public class AccountControllerTest {
 	public void testGet() throws Exception {
     	mvc.perform(get("/account/1").with(csrf().asHeader()).session(this.session)
 				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE)).andExpect(status().isOk());
+	}
+    
+    @Test
+	@WithAnonymousUser
+	public void testSave() throws Exception {
+    	String content = "{"
+    			+ "\"accountId\": \"" + id + "\","
+    			+ "\"accountNm\": \"name\","
+    			+ "\"accountPw\": \"12345\","
+    			+ "\"tel\": \"" + tel + "\","
+    			+ "\"email\": \"" + email + "\""
+    			+ "}";
+    	mvc.perform(put("/account/1").with(csrf().asHeader()).session(this.session)
+    			.content(content)
+    			.contentType(MediaType.APPLICATION_JSON_UTF8_VALUE)
+				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+    			.andExpect(status().isOk());
+	}
+    
+    @Test
+	@WithAnonymousUser
+	public void testDel() throws Exception {
+    	mvc.perform(delete("/account/1").with(csrf().asHeader()).session(this.session)
+				.accept(MediaType.APPLICATION_JSON_UTF8_VALUE))
+    			.andExpect(status().isOk());
 	}
 
 }

@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -16,6 +17,7 @@ import lwj.app.models.system.account.Account;
 import lwj.app.models.system.account.AccountService;
 import lwj.app.models.system.history.History;
 import lwj.app.models.system.history.HistoryService;
+import lwj.app.utils.system.BrowserUtil;
 import lwj.app.utils.system.LogUtil;
 
 /**
@@ -37,6 +39,20 @@ public class AppLogin {
 	private HistoryService historyService;
 	
 	
+	
+	/**
+	 * 登录界面
+	 * @return
+	 */
+	@RequestMapping("/view/login")
+	public String login(@RequestHeader("User-Agent") String useAgent) throws Exception {
+		// 判断是否为手机浏览器
+		if (BrowserUtil.isMoblie(useAgent)) {
+			return "/mobile/login";
+		}
+		
+		return "/main/login";
+	}
 	
 	/**
 	 * 登录失败

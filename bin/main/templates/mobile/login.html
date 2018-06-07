@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Study demo" />
+    <meta name="author" content="lf" />
+
+    <title>App</title>
+
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_226046_ud7r7if5kyajdcxr.css">
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <style type="text/css">
+        body {
+            background-color: #f0f0f0;
+            padding-top: 100px;
+            color: #303133;
+            width: 100%;
+            min-width: 1600px;
+        }
+        .contain {
+            background-color: #ffffff;
+            border-radius: 5px;
+            -moz-box-shadow: 5px 5px 5px #e7e7e7;
+            -webkit-box-shadow: 5px 5px 5px #e7e7e7;
+            box-shadow: 5px 5px 5px #e7e7e7;
+            padding: 40px;
+            width: 300px;
+            margin: 0 auto;
+        }
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .lan-panel {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-panel {
+            text-align: center;
+        }
+        .forget_pw {
+            margin-top: 10px;
+            text-align: right;
+        }
+        #msg {
+            text-align: left;
+            color: red;
+            float: left;
+            font-size: 14px;
+            line-height: 14px;
+        }
+        .btn_login {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="contain">
+        <!-- title -->
+        <div class="login-title">
+            <img src="/img/login-logo.png" style="width: 60px; margin-bottom: 20px;"/>
+            <div th:text="#{用户登录}"></div>
+        </div>
+        <!-- languge select rado buttons -->
+        <div class="lan-panel">
+            <el-radio-group v-model="locale">
+                <el-radio label="zh">中 文</el-radio>
+                <el-radio label="ko">한국어</el-radio>
+                <el-radio label="en">English</el-radio>
+            </el-radio-group>
+        </div>
+
+        <div class="login-panel">
+            <form action="/login" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                <el-input th:placeholder="#{帐号}" name="accountId" v-model="accountId" clearable="true" autofocus="true">
+                    <i class="el-input__icon icon iconfont icon-people" slot="prefix" style="padding-left: 4px;"></i>
+                </el-input>
+
+                <div style="height: 20px;"></div>
+
+                <el-input th:placeholder="#{密码}" name="accountPw" v-model="accountPw" clearable="true" type="password">
+                    <i class="el-input__icon icon iconfont icon-lock" slot="prefix" style="padding-left: 4px;"></i>
+                </el-input>
+
+                <div class="forget_pw">
+                    <!-- 错误信息显示区域-->
+                    <span id="msg" th:if="${failure}" th:text="#{请输入正确的账号和密码}">&nbsp;</span>
+
+                    <el-button type="text" th:text="#{忘记了密码}"></el-button>
+                </div>
+
+                <div style="height: 20px;"></div>
+
+                <el-button type="primary" native-type="submit" th:text="#{登录}" class="btn_login"></el-button>
+
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        /*<![CDATA[*/
+        new Vue({
+            el: '#app',
+            data: {
+                locale: '[[#{locale}]]',
+                accountId: '',
+                accountPw: ''
+            },
+            watch: {
+                locale: function (val) {
+                    location.href = "?locale=" + val;
+                }
+            }
+        });
+        /*]]>*/
+    </script>
+</body>
+</html>

@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -41,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// 设置登录界面属性
 		http.formLogin()
-			.loginPage("/v/main/login").permitAll()		// 登录界面地址
+			.loginPage("/view/login").permitAll()		// 登录界面地址
 			.usernameParameter("accountId")				// 自定义登录界面ID
 			.passwordParameter("accountPw")				// 自定义登录界面密码
 			.loginProcessingUrl("/login")				// 登录事件地址
@@ -51,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// 设置登出属性
 		http.logout()
 			.logoutUrl("/logout").permitAll()		// 退出地址
-			.logoutSuccessUrl("/v/main/login")		// 退出成功后显示登录界面
+			.logoutSuccessUrl("/view/login")		// 退出成功后显示登录界面
 			.deleteCookies("JSESSIONID")			// 退出成功后删除Cookies
 			.invalidateHttpSession(true);			// 登出时清空Session
 		
