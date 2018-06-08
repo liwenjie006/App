@@ -87,7 +87,7 @@ public class AppLogin {
 		// 设置Session
 		model.addAttribute("sa_account", account);
 		
-		return "redirect:/v/main/main";
+		return "redirect:/main";
 	}
 	
 	/**
@@ -107,7 +107,7 @@ public class AppLogin {
 		
 		historyService.save(history);
 		
-		return "redirect:/v/main/main";
+		return "redirect:/";
 	}
 	
 }

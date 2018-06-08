@@ -83,13 +83,9 @@
 <!-- 		<appender-ref ref="RollingFile" /> -->
 	</logger>
 	
-	<logger name="org.app" level="DEBUG">
+	<logger name="lwj.app" level="DEBUG">
 		<appender-ref ref="Console" />
 <!-- 		<appender-ref ref="RollingFile" /> -->
-	</logger>
-	
-	<logger name="com.jolbox" level="DEBUG">
-		<appender-ref ref="Console" />
 	</logger>
 	
 	<!-- 

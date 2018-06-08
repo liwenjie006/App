@@ -15,8 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -24,6 +27,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lwj.app.models.Base;
+import lwj.app.models.business.action.Action;
 import lwj.app.models.business.menu.Menu;
 import lwj.app.models.system.role.Role;
 
@@ -37,8 +41,8 @@ import lwj.app.models.system.role.Role;
 @Table(name="SYS_ACCOUNT")
 @Inheritance(strategy=InheritanceType.JOINED)
 @Data
-@EqualsAndHashCode(callSuper=false, exclude={ "roles", "menus" })
-@ToString(callSuper=false, exclude={ "roles", "menus" })
+@EqualsAndHashCode(callSuper=false, exclude={ "roles", "menus", "actions" })
+@ToString(callSuper=false, exclude={ "roles", "menus", "actions" })
 public class Account extends Base {
 
 	/** serialVersionUID. */
@@ -122,6 +126,16 @@ public class Account extends Base {
 			joinColumns=@JoinColumn(name="accountCd"),
 			inverseJoinColumns=@JoinColumn(name="menuCd"))
 	@JsonIgnore
+	@OrderBy("mlevel, ord")
 	private List<Menu> menus;
+	
+	/** 事件集合 */
+	@OneToMany(cascade=CascadeType.REFRESH)
+	@JoinTable(
+			name="SYS_ACCOUNT_X_ACTION",
+			joinColumns=@JoinColumn(name="accountCd"),
+			inverseJoinColumns=@JoinColumn(name="actionCd"))
+	@JsonIgnore
+	private List<Action> actions;
 
 }

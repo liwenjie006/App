@@ -45,7 +45,22 @@ public class AppWeb {
 	 */
 	@RequestMapping("/")
 	public String index() throws Exception {
+		
+		logUtil.print("into -> index");
+		
 		return "index";
+	}
+	
+	/**
+	 * 根路径配置
+	 * @return index.html
+	 */
+	@RequestMapping("/main")
+	public String main() throws Exception {
+		
+		logUtil.print("into -> main");
+		
+		return "main/main";
 	}
 
 	/**
@@ -55,6 +70,7 @@ public class AppWeb {
 	@RequestMapping("/v/{folder}/{type}")
 	public String view(@PathVariable("folder") String folder, 
 			@PathVariable("type") String type) throws Exception {
+		
 		logUtil.print("into -> " + folder + File.separator + type);
 		
 		return folder + File.separator + type;

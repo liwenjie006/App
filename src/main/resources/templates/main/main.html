@@ -16,20 +16,20 @@
 	<link rel="stylesheet" type="text/css" href="/css/main.css"/>
 
 	<!-- 全局变量设置 -->
-	<script type="text/javascript" th:inline="javascript">
+	<script type="text/javascript">
         /*<![CDATA[*/
         var appMsg = {
-            loadingMsg: [[#{请求处理中}]],
-            systemAlterTitle: [[#{系统提示}]],
-            systemAlterButton: [[#{返回登录界面}]],
-            systemAlterTimeoutMsg: [[#{服务器连接超时，请重新登录}]],
-            systemAlterNoPermissionsMsg: [[#{您因权限不足，无法访问该资源}]]
+            loadingMsg: "[[#{请求处理中}]]",
+            systemAlterTitle: "[[#{系统提示}]]",
+            systemAlterButton: "[[#{返回登录界面}]]",
+            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
+            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
         }
 
         var appCsrf = {
-            csrf_parameter: [[${_csrf.parameterName}]],
-            csrf_header: [[${_csrf.headerName}]],
-            csrf_token: [[${_csrf.token}]]
+            csrf_parameter: "[[${_csrf.parameterName}]]",
+            csrf_header: "[[${_csrf.headerName}]]",
+            csrf_token: "[[${_csrf.token}]]"
         }
         /*]]>*/
 	</script>

@@ -1,14 +1,16 @@
 package lwj.app.models.system.account;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lwj.app.models.BaseService;
 import lwj.app.models.business.menu.Menu;
+import lwj.app.utils.system.LogUtil;
 
 
 /**
@@ -20,7 +22,9 @@ import lwj.app.models.business.menu.Menu;
 @Transactional
 public class AccountService extends BaseService<Account> {
 
-	@Autowired
+	private LogUtil log = new LogUtil(getClass());
+	
+	@Resource
 	private AccountRepository accountRepository;
 	
 	/**
@@ -32,6 +36,9 @@ public class AccountService extends BaseService<Account> {
 		return accountRepository.findOneByAccountId(accountId);
 	}
 	
+	private List<Menu> tmpMenus;
+	private List<Menu> subMenu;
+	
 	/**
 	 * 通过账户ID取得菜单信息
 	 * @param account
@@ -39,7 +46,37 @@ public class AccountService extends BaseService<Account> {
 	 */
 	public List<Menu> getMenu(Account account) {
 		account = accountRepository.findOneByAccountId(account.getAccountId());
-		return account.getMenus();
+		
+		List<Menu> menus = new ArrayList<Menu>();
+		
+		tmpMenus = new ArrayList<Menu>();
+		subMenu = new ArrayList<Menu>();
+		
+		account.getMenus().forEach(menu -> {
+			if (menu.isEnabled()) {
+				// 1级菜单
+				if (1 == menu.getMlevel()) {
+					menus.add(menu);
+					tmpMenus.add(menu);
+				// 2+级菜单
+				} else {
+					if (tmpMenus.get(0).getMlevel()+1 == menu.getMlevel()) {
+						tmpMenus.stream()
+								.filter(tmp -> tmp.getMenuCd() == menu.getTopMenu().getMenuCd())
+								.findFirst()
+								.get().getSubMenu().add(menu);
+					} else {
+						tmpMenus = new ArrayList<Menu>();
+						subMenu = new ArrayList<Menu>();
+						tmpMenus.add(menu);
+					}
+				}
+			}
+		});
+		
+		log.print(menus);
+		
+		return menus;
 	}
 	
 	/**
