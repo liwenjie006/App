@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.fasterxml.jackson.annotation.JsonView;
 
 import lwj.app.models.business.menu.Menu;
-import lwj.app.models.business.menu.Menu.SubMenuView;
+import lwj.app.models.business.menu.Menu.TopMenuView;
 import lwj.app.models.system.account.Account;
 import lwj.app.models.system.account.AccountService;
 import lwj.app.utils.system.LogUtil;
@@ -32,7 +32,7 @@ import lwj.app.utils.system.LogUtil;
 @SessionAttributes({ "sa_account" })
 public class AppWeb {
 
-	private LogUtil logUtil = new LogUtil(AppWeb.class);
+	private LogUtil log = new LogUtil(AppWeb.class);
 	
 	@Autowired
 	private AccountService accountService;
@@ -46,7 +46,7 @@ public class AppWeb {
 	@RequestMapping("/")
 	public String index() throws Exception {
 		
-		logUtil.print("into -> index");
+		log.print("into -> index");
 		
 		return "index";
 	}
@@ -58,7 +58,7 @@ public class AppWeb {
 	@RequestMapping("/main")
 	public String main() throws Exception {
 		
-		logUtil.print("into -> main");
+		log.print("into -> main");
 		
 		return "main/main";
 	}
@@ -71,7 +71,7 @@ public class AppWeb {
 	public String view(@PathVariable("folder") String folder, 
 			@PathVariable("type") String type) throws Exception {
 		
-		logUtil.print("into -> " + folder + File.separator + type);
+		log.print("into -> " + folder + File.separator + type);
 		
 		return folder + File.separator + type;
 	}
@@ -84,7 +84,7 @@ public class AppWeb {
 	public String view(@PathVariable("folder") String folder, @PathVariable("model") String model, 
 			@PathVariable("type") String type) throws Exception {
 		
-		logUtil.print("into -> " + folder + File.separator + model + File.separator + model + "_" + type);
+		log.print("into -> " + folder + File.separator + model + File.separator + model + "_" + type);
 		
 		return folder + File.separator + model + File.separator + model + "_" + type;
 	}
@@ -94,8 +94,11 @@ public class AppWeb {
 	 * @return
 	 */
 	@RequestMapping(value="/mainMenu", method=RequestMethod.POST)
-	@JsonView(SubMenuView.class)
+	@JsonView(TopMenuView.class)
 	public @ResponseBody List<Menu> mainMenu(@SessionAttribute("sa_account") Account account) throws Exception {
+		
+		log.print(accountService.getMenu(account));
+		
 		return accountService.getMenu(account);
 	}
 	

@@ -7,10 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lwj.app.models.Base;
+import lwj.app.models.business.menu.Menu.SubMenuView;
+import lwj.app.models.business.menu.Menu.TopMenuView;
 
 /**
  * 资源
@@ -31,6 +35,7 @@ public class Resource extends Base {
 	/** 编码 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonView({ SubMenuView.class })
 	private int resourceCd;
 
 	/** 名 */
@@ -39,6 +44,7 @@ public class Resource extends Base {
 	
 	/** URL */
 	@Column(length=250, nullable=false)
+	@JsonView(TopMenuView.class)
 	private String resourceUrl;
 
 	/** 描述 */

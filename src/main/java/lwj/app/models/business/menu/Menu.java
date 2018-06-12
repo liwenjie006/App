@@ -44,18 +44,22 @@ public class Menu extends Base {
 	/** 编码 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@JsonView(SubMenuView.class)
 	private int menuCd;
 
 	/** 名 */
 	@Column(length=100, nullable=false)
+	@JsonView({ TopMenuView.class, SubMenuView.class })
 	private String menuNm;
 
 	/** 图标 */
 	@Column(length=100)
+	@JsonView({ TopMenuView.class, SubMenuView.class })
 	private String menuIcon;
 
 	/** 类型 */
 	@Column(length=1, nullable=false)
+	@JsonView({ TopMenuView.class, SubMenuView.class })
 	private int mlevel = 1;
 
 	/** 顺序 */
@@ -75,6 +79,7 @@ public class Menu extends Base {
 
 	@OneToOne(cascade= { CascadeType.REFRESH })
 	@JoinColumn(name="MENU_URL")
+	@JsonView({ TopMenuView.class, SubMenuView.class })
 	private Resource menuUrl;
 	
 }

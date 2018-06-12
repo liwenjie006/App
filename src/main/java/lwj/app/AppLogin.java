@@ -1,5 +1,6 @@
 package lwj.app;
 
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ import lwj.app.utils.system.LogUtil;
 @SessionAttributes({ "sa_account" })
 public class AppLogin {
 
-	private LogUtil logUtil = new LogUtil(AppLogin.class);
+	private LogUtil log = new LogUtil(AppLogin.class);
 	
 	@Autowired
 	private AccountService accountService;
@@ -44,7 +45,7 @@ public class AppLogin {
 	 * 登录界面
 	 * @return
 	 */
-	@RequestMapping("/view/login")
+	@RequestMapping("/v/login")
 	public String login(@RequestHeader("User-Agent") String useAgent) throws Exception {
 		// 判断是否为手机浏览器
 		if (BrowserUtil.isMoblie(useAgent)) {
@@ -59,9 +60,9 @@ public class AppLogin {
 	 * @return
 	 */
 	@RequestMapping("/loginFailure")
-	public String loginFailure(Model model) throws Exception {
-		logUtil.print("loginFailure");
-		model.addAttribute("failure", "Y");
+	public String loginFailure(Model model, HttpSession session) throws Exception {
+		log.print("loginFailure");
+		model.addAttribute("failure", null == session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION") ? false : true);
 		return "main/login";
 	}
 	
@@ -71,7 +72,7 @@ public class AppLogin {
 	 */
 	@RequestMapping("/loginSuccess")
 	public String loginSuccess(History history, Model model) throws Exception {
-		logUtil.print("loginSuccess");
+		log.print("loginSuccess");
 		// 取得登录信息
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
@@ -96,7 +97,7 @@ public class AppLogin {
 	 */
 	@RequestMapping("/logout")
 	public String logout(History history, @SessionAttribute("sa_account") Account account) throws Exception {
-		logUtil.print("loginSuccess");
+		log.print("loginSuccess");
 		// 取得登录信息
 		WebAuthenticationDetails webAuthenticationDetails = (WebAuthenticationDetails)SecurityContextHolder.getContext().getAuthentication().getDetails();
 		

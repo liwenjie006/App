@@ -7,7 +7,7 @@
     <meta name="description" content="Study demo" />
     <meta name="author" content="lf" />
 
-	<title>App</title>
+	<title th:text="#{Study}"></title>
 
 	<!-- 引入样式 -->
 	<link rel="stylesheet" type="text/css" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
@@ -118,6 +118,7 @@
                     background: 'rgba(0, 0, 0, 0.7)'
                 });
 
+                
 				// 取得菜单
                 axiosUtil.post("/mainMenu", null, function (result) {
                     vue.menuList = result;
