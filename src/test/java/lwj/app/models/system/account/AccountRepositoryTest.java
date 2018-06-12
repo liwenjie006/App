@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import lwj.app.models.business.menu.Menu;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -85,4 +87,14 @@ public class AccountRepositoryTest {
 		assertThat(result).asList();
 	}
 
+	/**
+	 * 测试通过邮箱取得帐号信息
+	 */
+	@Test
+	public void testFindSubMenus() {
+		List<Menu> result = repository.findSubMenus(1, 1, 2);
+		
+		assertThat(result).isNotNull();
+		assertThat(result).asList();
+	}
 }

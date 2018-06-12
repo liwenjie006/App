@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,13 +14,21 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import lwj.app.models.business.menu.Menu;
+import lwj.app.models.business.menu.MenuRepository;
+import lwj.app.utils.system.LogUtil;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class AccountServiceTest {
 
 	@Resource
 	private AccountService service;
+	
+	@Resource
+	private MenuRepository menuRepository;
+	
+	private LogUtil log = new LogUtil(getClass());
 	
 	private String id = "junit-" + UUID.randomUUID();
 	private String tel = "01063138710";
@@ -40,6 +49,17 @@ public class AccountServiceTest {
 		
 		assertThat(result).isNotNull();
 		assertThat(result).asList();
+	}
+	
+	@Test
+	public void testRecursionSubMenu() {
+		Menu menu = menuRepository.findById(1).get();
+		Account account = service.findOneByAccountId("admin");
+		
+		service.recursionSubMenu(menu, account.getAccountCd());
+		
+		assertThat(menu).isNotNull();
+		assertThat(menu.getSubMenu()).asList();
 	}
 
 	@Test

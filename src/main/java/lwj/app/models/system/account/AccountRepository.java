@@ -51,8 +51,8 @@ public interface AccountRepository extends BaseRepository<Account, Serializable>
 	 * @param mlevel
 	 * @return 菜单列表
 	 */
-	@Query("FROM Account a JOIN a.menus m WHERE a.accountCd = @accountCd AND m.mlevel = @mlevel AND m.mlevel = @mlevel")
-	public List<Menu> findMenuList(String accountCd, int menuCd, int mlevel);
+	@Query("SELECT m FROM Account a JOIN a.menus m WHERE a.accountCd = ?1 AND (m.topMenu.menuCd = ?2 OR 0 = ?2) AND m.mlevel = ?3")
+	public List<Menu> findSubMenus(int accountCd, int menuCd, int mlevel);
 	
 	
 }

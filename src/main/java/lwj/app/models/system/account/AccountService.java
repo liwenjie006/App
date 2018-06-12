@@ -41,8 +41,23 @@ public class AccountService extends BaseService<Account> {
 	 * @return List<Menu>
 	 */
 	public List<Menu> getMenu(Account account) {
-		account = accountRepository.findOneByAccountId(account.getAccountId());
-		return account.getMenus();
+		List<Menu> menus = accountRepository.findSubMenus(account.getAccountCd(), 0, 1);
+		
+		menus.forEach(menu -> {
+			recursionSubMenu(menu, account.getAccountCd());
+		});
+		
+		return menus;
+	}
+	
+	public void recursionSubMenu(Menu menu, int accountCd) {
+		List<Menu> menuList = accountRepository.findSubMenus(accountCd, menu.getMenuCd(), menu.getMlevel()+1);
+		if (null != menuList && menuList.size() > 0) {
+			menuList.forEach(m -> {
+				recursionSubMenu(m, accountCd);
+			});
+			menu.setSubMenu(menuList);
+		}
 	}
 	
 	/**
