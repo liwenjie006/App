@@ -44,90 +44,133 @@
 <body>
 	<div id="app" class="contain">
 		<el-container>
-			<el-header></el-header>
+			<el-header>
+			</el-header>
 
 			<el-container>
 				<el-aside width="200px">
-					<el-menu>
-						<el-submenu index="pmenu.menu_cd" v-for="pmenu in menuList" :key="pmenu.menu_cd">
+					<el-menu default-active="1" @select="handleSelect">
+						<el-submenu :index="menu1" v-for="menu1 in menuList">
 							<template slot="title">
 								<i class="el-icon-location"></i>
-								<span>{{ pmenu.menu_nm }}</span>
+								<span>{{ menu1.menuNm }}</span>
 							</template>
-							<el-menu-item index="menu.menu_cd" v-for="menu in pmenu.smenu" :key="menu.menu_cd">{{ menu.menu_nm }}</el-menu-item>
+							
+							<el-menu-item v-if="menu2.subMenu.length == 0" :index="menu2" v-for="menu2 in menu1.subMenu">
+								<template slot="title">
+									<i class="el-icon-location"></i>
+									<span>{{ menu2.menuNm }}</span>
+								</template>
+							</el-menu-item>
+							
+							<el-submenu v-else :index="menu2" v-for="menu2 in menu1.subMenu">
+								<template slot="title">
+									<i class="el-icon-location"></i>
+									<span>{{ menu2.menuNm }}</span>
+								</template>
+								
+								<el-menu-item v-if="menu3.subMenu.length == 0" :index="menu3" v-for="menu3 in menu2.subMenu">
+									<template slot="title">
+										<i class="el-icon-location"></i>
+										<span>{{ menu3.menuNm }}</span>
+									</template>
+								</el-menu-item>
+								
+								<el-submenu v-else :index="menu3" v-for="menu3 in menu2.subMenu">
+									<template slot="title">
+										<i class="el-icon-location"></i>
+										<span>{{ menu3.menuNm }}</span>
+									</template>
+									
+									<el-menu-item :index="menu4" v-for="menu4 in menu3.subMenu">
+										<template slot="title">
+											<i class="el-icon-location"></i>
+											<span>{{ menu4.menuNm }}</span>
+										</template>
+									</el-menu-item>
+							
+								</el-submenu>
+							</el-submenu>
 						</el-submenu>
 					</el-menu>
 				</el-aside>
 
 				<el-main>
-
+					<el-tabs v-model="activiTab" type="card" closable @tab-remove="removeTab">
+						<el-tab-pane v-for="(item, index) in tabs" :key="item.name" :label="item.title" :name="item.name" v-html="item.content">
+						</el-tab-pane>
+					</el-tabs>
 				</el-main>
+				
 			</el-container>
 		</el-container>
-
-
-		<!--<div id="leftMenu" class="leftMenu menu white">-->
-			<!--<div class="menu-header">-->
-				<!--<div class="input-group">-->
-					<!--<input type="text" class="form-control input-sm" />-->
-					<!--<span class="input-group-btn">-->
-						<!--<button class="btn btn-default btn-sm" type="button">Search</button>-->
-					<!--</span>-->
-				<!--</div>-->
-			<!--</div>-->
-			<!--<ul id="menu-list"></ul>-->
-			<!--<div class="menu-footer">Footer</div>-->
-		<!--</div>-->
-
-		<!--&lt;!&ndash; Content &ndash;&gt;-->
-    	<!--<div id="content" class="content">-->
-    		<!--<div class="panel-body">-->
-    			<!--&lt;!&ndash; Nav tabs &ndash;&gt;-->
-				<!--<ul class="nav-my-tab">-->
-					<!--<li class="leftbackward" onselectstart="return false;">-->
-						<!--<i class="glyphicon glyphicon-backward" ></i>-->
-					<!--</li>-->
-					<!--<li class="middletab">-->
-						<!--<ul id="tab_title" class="nav nav-tabs"></ul>-->
-					<!--</li>-->
-					<!--<li class="rightforward" onselectstart="return false;">-->
-						<!--<i class="glyphicon glyphicon-forward" ></i>-->
-					<!--</li>-->
-				<!--</ul>-->
-                <!--&lt;!&ndash; Tab panes &ndash;&gt;-->
-                <!--<div id="tab_contents" class="tab-content"></div>-->
-            <!--</div>-->
-    	<!--</div>-->
-
     </div>
 
-	<script type="text/javascript" th:inline="javascript">
-		/*<![CDATA[*/
-		var loading = null;
-        var vue = new Vue({
-            el: '#app',
-            data: {
-                menuList: null
-            },
-            beforeCreate: function () {
-                // 初始化Loading
-                loading = this.$loading({
-                    lock: true,
-                    text: appMsg.loadingMsg,
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
-
-                
+	<script type="text/javascript">
+	/*<![CDATA[*/
+		console.log(1);
+		var vue = new Vue({
+			el: '#app',
+			data: function() {
+				return {
+					menuList: null,	// 菜单列表数据
+					tabs: [],		// 标签列表数据
+					activiTab: ''	// 当前标签
+				}
+			},
+			beforeCreate: function () {
 				// 取得菜单
-                axiosUtil.post("/mainMenu", null, function (result) {
-                    vue.menuList = result;
-                    loading.close();
-                });
-            }
-
-        });
-        /*]]>*/
+				axiosUtil.post("/mainMenu", null, function (result) {
+					vue.menuList = result;
+				}, this, true);
+			},
+			methods: {
+				// 选择菜单事件
+				handleSelect(menu) {
+					this.addTab(menu.menuCd, menu.menuNm, menu.menuUrl.resourceUrl);
+				},
+				// 添加标签事件
+				addTab(menuCd, menuNm, menuUrl) {
+					// 判断是否为已打开的标签，已打开的标签直接选择标签
+					let isOpend = false;
+					this.tabs.forEach((tab, index) => {
+						if (menuCd === tab.name) {
+							isOpend = true;
+						}
+					});
+					
+					// 未打开时添加
+					if (!isOpend) {
+						// 取得菜单
+						axiosUtil.post("/main", null, function (result) {
+							vue.tabs.push({
+								title: menuNm,
+								name: menuCd,
+								content: result
+							});
+						}, this, true);
+					}
+					// 保存当前标签
+					this.activiTab = menuCd;
+				},
+				// 删除标签事件
+				removeTab(key) {
+					let tabs = this.tabs;
+					let activiTab = this.activiTab;
+					if (key === this.activiTab) {
+						tabs.forEach((tab, index) => {
+							if (key === tab.name) {
+								let nextTab = tabs[index + 1] || tabs[index - 1];
+								if (nextTab) activiTab = nextTab.name;
+							}
+						});
+					}
+			        this.activiTab = activiTab;
+			        this.tabs = tabs.filter(tab => tab.name !== key);
+				}
+		    }
+		});
+	/*]]>*/
 	</script>
 </body>
 </html>

@@ -44,7 +44,7 @@ public class Resource extends Base {
 	
 	/** URL */
 	@Column(length=250, nullable=false)
-	@JsonView(TopMenuView.class)
+	@JsonView(SubMenuView.class)
 	private String resourceUrl;
 
 	/** 描述 */

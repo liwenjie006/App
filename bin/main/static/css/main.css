@@ -1,9 +1,11 @@
 @CHARSET "UTF-8";
-html, body {
-	background-color: #f0f0f0;
+html, body, .contain {
+	background-color: #fff;
 	color: #606266;
 	width: 100%;
 	min-width: 1600px;
+	height: 100%;
+	min-height: 600px;
 }
 .contain {
 

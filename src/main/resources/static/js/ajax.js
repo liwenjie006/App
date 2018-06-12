@@ -4,6 +4,7 @@ var ajax = {
 	openProgresBarWindow: function () {
 		$("body").mLoading({ text: loadingMsg });
 	},
+	
 	/* 로딩바 닫기 */
 	closeProgresBarWindow: function () {
 		$("body").mLoading("hide");

@@ -4,7 +4,7 @@ server:
   address: 127.0.0.1
   servlet:
     session:
-      timeout: 600
+      timeout: 6000
 
 
 spring:
