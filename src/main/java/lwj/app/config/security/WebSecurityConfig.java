@@ -69,6 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling()
 			.accessDeniedPage("/error/notPermissions");			// 权限异常时访问的路径
 		
+		// 允许Iframe
+		http.headers().frameOptions().sameOrigin();
 	}
 
 	@Bean

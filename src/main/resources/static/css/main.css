@@ -3,10 +3,12 @@ html, body, .contain {
 	background-color: #fff;
 	color: #606266;
 	width: 100%;
-	min-width: 1600px;
+	min-width: 1360px;
 	height: 100%;
-	min-height: 600px;
+	min-height: 458px;
 }
-.contain {
+.buttons {
+	clear: both;
+	text-align: right;
+}
 
-}

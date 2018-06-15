@@ -132,7 +132,7 @@ public class AppStartRunner implements ApplicationRunner {
 		if (null == resource_1) {
 			resource_1 = new Resource();
 			resource_1.setResourceNm("账号管理");
-			resource_1.setResourceUrl("/v/system/account/list");
+			resource_1.setResourceUrl("/v/system/user/list");
 			resource_1.setResourceDesc("账号管理");
 			resource_1.setInUser(account);
 			resource_1.setInDtm(new Date());

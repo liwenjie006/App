@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+	<!-- 共同CSS -->
+	<div th:fragment="css">
+		<!-- 引入样式 -->
+		<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_226046_ui5kg83t2n.css"/>
+		<link rel="stylesheet" type="text/css" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/normalize.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/main.css"/>
+	</div>
+	
+	<!-- 共同JS -->
+	<div th:fragment="js">
+		<!-- 全局变量设置 -->
+		<script type="text/javascript">
+        /*<![CDATA[*/
+        var appMsg = {
+            loadingMsg: "[[#{请求处理中}]]",
+            systemAlterTitle: "[[#{系统提示}]]",
+            systemAlterButton: "[[#{返回登录界面}]]",
+            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
+            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
+        }
+
+        var appCsrf = {
+            csrf_parameter: "[[${_csrf.parameterName}]]",
+            csrf_header: "[[${_csrf.headerName}]]",
+            csrf_token: "[[${_csrf.token}]]"
+        }
+        /*]]>*/
+		</script>
+		
+		<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
+		<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
+	    <script type="text/javascript" src="/js/axiosUtil.js"></script>
+	    <script type="text/javascript" src="/js/util.js"></script>
+	</div>
+</body>
+</html>

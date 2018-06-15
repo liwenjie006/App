@@ -18,7 +18,15 @@ spring:
     username: "lwj"
     password: "lwj6TX006!"
     hikari:
-      maximum-pool-size: 3
+      pool-name: "app-hikari-20"
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 10000
+      validation-timeout: 4000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      connection-test-query: "SELECT 1"
+      
   
   jpa:
     show-sql: true

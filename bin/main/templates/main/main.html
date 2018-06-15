@@ -6,45 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Study demo" />
     <meta name="author" content="lf" />
-
 	<title th:text="#{Study}"></title>
-
-	<!-- 引入样式 -->
-	<link rel="stylesheet" type="text/css" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
-	<link rel="stylesheet" type="text/css" href="//at.alicdn.com/t/font_226046_ud7r7if5kyajdcxr.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/normalize.css"/>
-	<link rel="stylesheet" type="text/css" href="/css/main.css"/>
-
-	<!-- 全局变量设置 -->
-	<script type="text/javascript">
-        /*<![CDATA[*/
-        var appMsg = {
-            loadingMsg: "[[#{请求处理中}]]",
-            systemAlterTitle: "[[#{系统提示}]]",
-            systemAlterButton: "[[#{返回登录界面}]]",
-            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
-            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
-        }
-
-        var appCsrf = {
-            csrf_parameter: "[[${_csrf.parameterName}]]",
-            csrf_header: "[[${_csrf.headerName}]]",
-            csrf_token: "[[${_csrf.token}]]"
-        }
-        /*]]>*/
-	</script>
-
-	<!-- 引入组件库 -->
-	<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
-	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
-	<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <script type="text/javascript" src="/js/axiosUtil.js"></script>
-
 </head>
 <body>
+	<!-- 引入CSS -->
+	<div th:include="main/import :: css"></div>
+	
+	<style type="text/css">
+		html, body, .contain {
+			background-color: #fff;
+			color: #606266;
+			width: 100%;
+			min-width: 1600px;
+			height: 100%;
+			min-height: 600px;
+		}
+		.el-header { padding: 14px 20px; border-bottom: thin solid #dbdbdb; background-color: #ecf5ff; }
+		.el-header div { float: left; }
+		.logo { width: 180px; text-align: center; padding-left: 20px; }
+		.logo img { height: 30px; float: left; }
+		.logo span { font-size: 22px; display: block; padding-left: 8px; padding-top: 4px; float: left; }
+		.info { width: calc(100% - 200px); text-align: right; }
+		.el-container, .el-aside, .el-menu, .el-tabs__content, .el-tab-pane { height: 100%; }
+		.el-tabs { height: calc(100% - 60px); }
+	</style>
+	
 	<div id="app" class="contain">
 		<el-container>
 			<el-header>
+				<div class="logo">
+					<img src="/img/login-logo.png" />
+					<span th:text="#{Study}"></span>
+				</div>
+				<div class="title">
+				</div>
+				<div class="info">
+					<el-button @click="logout" size="mini" circle>
+						<i class="icon iconfont icon-logout" @click="logout"></i>
+					</el-button>
+				</div>
 			</el-header>
 
 			<el-container>
@@ -97,18 +97,19 @@
 
 				<el-main>
 					<el-tabs v-model="activiTab" type="card" closable @tab-remove="removeTab">
-						<el-tab-pane v-for="(item, index) in tabs" :key="item.name" :label="item.title" :name="item.name" v-html="item.content">
-						</el-tab-pane>
+						<el-tab-pane v-for="(item, index) in tabs" :key="item.name" :label="item.title" :name="item.name" v-html="item.content"></el-tab-pane>
 					</el-tabs>
 				</el-main>
 				
 			</el-container>
 		</el-container>
     </div>
+    
+    <!-- 引入JS -->
+    <div th:include="main/import :: js"></div>
 
 	<script type="text/javascript">
 	/*<![CDATA[*/
-		console.log(1);
 		var vue = new Vue({
 			el: '#app',
 			data: function() {
@@ -125,6 +126,9 @@
 				}, this, true);
 			},
 			methods: {
+				logout() {
+					location.href = '/logout';
+				},
 				// 选择菜单事件
 				handleSelect(menu) {
 					this.addTab(menu.menuCd, menu.menuNm, menu.menuUrl.resourceUrl);
@@ -142,13 +146,12 @@
 					// 未打开时添加
 					if (!isOpend) {
 						// 取得菜单
-						axiosUtil.post("/main", null, function (result) {
-							vue.tabs.push({
-								title: menuNm,
-								name: menuCd,
-								content: result
-							});
-						}, this, true);
+						vue.tabs.push({
+							title: menuNm,
+							name: menuCd,
+							content: '<iframe src="' + menuUrl + '" id="' + menuCd + '" scrolling="auto" width="100%" height="100%" '
+									+ 'frameborder="0" marginheight="0" marginwidth="0" />'
+						});
 					}
 					// 保存当前标签
 					this.activiTab = menuCd;
