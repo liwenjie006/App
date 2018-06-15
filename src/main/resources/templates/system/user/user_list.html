@@ -1,33 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head></head>
-<body onload="resize();" onresize="resize();">
+<body>
 	<!-- 引入CSS -->
 	<div th:include="main/import :: css"></div>
 	
 	<div id="app">
 		<!-- 检索条件 -->
-		<el-form id="form" ref="form" :inline="true" :model="form" label-width="100px" label-suffix=":" size="small">
-			<el-form-item th:label="#{帐号ID}"><el-input v-model="form.accountId"></el-input></el-form-item>
-			<el-form-item th:label="#{用户名称}"><el-input v-model="form.accountNm"></el-input></el-form-item>
-			<el-form-item th:label="#{是否可用}"><el-input v-model="form.enabled"></el-input></el-form-item>
-			<el-form-item th:label="#{是否锁定}"><el-input v-model="form.nonLocked"></el-input></el-form-item>
-		</el-form>
+		<div class="search_form">
+			<el-form id="form" ref="form" :inline="true" :model="form" label-width="100px" label-suffix=":" size="small">
+				<el-form-item th:label="#{帐号ID}"><el-input v-model="form.accountId"></el-input></el-form-item>
+				<el-form-item th:label="#{用户名称}"><el-input v-model="form.accountNm"></el-input></el-form-item>
+				<el-form-item th:label="#{是否可用}">
+					<el-checkbox-group v-model="form.enabled" size="small">
+						<el-checkbox th:label="可用" name="enabled" border checked></el-checkbox>
+						<el-checkbox th:label="不可用" name="enabled" border checked></el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+				<el-form-item th:label="#{是否锁定}">
+					<el-checkbox-group v-model="form.nonLocked" size="small">
+						<el-checkbox th:label="锁定" name="nonLocked" border checked></el-checkbox>
+						<el-checkbox th:label="未锁定" name="nonLocked" border checked></el-checkbox>
+					</el-checkbox-group>
+				</el-form-item>
+			</el-form>
+		</div>
 		
 		<!-- 按钮组 -->
 		<div id="buttons" class="buttons">
 			<el-button size="small" icon="el-icon-search" th:text="#{检索}"></el-button>
-			<el-button size="small" icon="el-icon-search" th:text="#{登录}"></el-button>
-			<el-button size="small" icon="el-icon-search" th:text="#{修改}"></el-button>
-			<el-button size="small" icon="el-icon-search" th:text="#{删除}"></el-button>
-			<el-button size="small" icon="el-icon-search" th:text="#{导出}"></el-button>
+			<el-button size="small" icon="el-icon-circle-plus-outline" th:text="#{登录}"></el-button>
+			<el-button size="small" icon="el-icon-edit-outline" th:text="#{修改}"></el-button>
+			<el-button size="small" icon="el-icon-remove-outline" th:text="#{删除}"></el-button>
+			<el-button size="small" icon="el-icon-download" th:text="#{导出}"></el-button>
 		</div>
 		
 		<!-- 列表 -->
 		<el-table id="table" :data="tableData" style="width: 100%" height="300" size="small"
 				border stripe highlight-current-row @current-change="handleCurrentChange"
 				tooltip-effect="dark" :default-sort = "{prop: 'date', order: 'descending'}">
-			<el-table-column type="selection" sortable width="55"></el-table-column>
+			<el-table-column type="selection" sortable width="36"></el-table-column>
 			<el-table-column fixed prop="date" label="日期" ></el-table-column>
 			<el-table-column prop="date" label="日期" ></el-table-column>
 			<el-table-column prop="date" label="日期" ></el-table-column>
@@ -40,17 +52,6 @@
     
     <script type="text/javascript">
 	/*<![CDATA[*/
-		function resize() {
-			console.log(document.getElementById("app").style);
-			console.log(document.getElementById("form").style);
-			console.log(document.getElementById("buttons").style);
-		
-// 			document.getElementById("table").style.height =
-// 			document.getElementById("app").style.height -
-// 			document.getElementById("form").style.height -
-// 			document.getElementById("buttons").style.height;
-		}
-		
 		var vue = new Vue({
 			el: '#app',
 			data: function() {
@@ -58,13 +59,10 @@
 					form: {
 						accountId: '',
 						accountNm: '',
-						userBirthday: '',
-						userDesc: '',
-						enabled: '',
-						nonLocked: '',
+						enabled: [],
+						nonLocked: [],
 						nonExpired: '',
-						credentialsNonExpired: '',
-						inDtm: ''
+						credentialsNonExpired: ''
 					},
 					tableData: [{
 						date: '234'
