@@ -2,14 +2,23 @@ package lwj.app.config.i18n;
 
 import java.util.Locale;
 
+import javax.annotation.Resource;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
+
 /**
   * 多国语言
   * @author LF
   *
   */
-public abstract class MessageSource {
+@Service
+public class MessageSource {
 
-	public Locale locale = Locale.CHINESE;
+	@Resource
+	private ApplicationContext context;
+	
+	private Locale locale = Locale.CHINESE;
 	
 	/**
 	 * 设定国际编码
@@ -33,7 +42,9 @@ public abstract class MessageSource {
 	 * @param locale Locale
 	 * @return String
 	 */
-	public abstract String getMessage(String code, Locale locale) throws Exception;
+	public String getMessage(String code, Locale locale) throws Exception {
+		return context.getMessage(code, null, "Code name is not exist", locale);
+	}
 	
 	/**
 	 * 取得对应字符
@@ -42,7 +53,9 @@ public abstract class MessageSource {
 	 * @param locale Locale
 	 * @return String
 	 */
-	public abstract String getMessage(String code, Object[] args, Locale locale) throws Exception;
+	public String getMessage(String code, Object[] args, Locale locale) throws Exception {
+		return context.getMessage(code, args, "Code name is not exist", locale);
+	}
 	
 	/**
 	 * 取得对应字符, 使用默认设置的国际编码

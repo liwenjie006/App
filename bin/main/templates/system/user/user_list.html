@@ -9,20 +9,32 @@
 		<!-- 检索条件 -->
 		<div class="search_form">
 			<el-form id="form" ref="form" :inline="true" :model="form" label-width="100px" label-suffix=":" size="small">
-				<el-form-item th:label="#{帐号ID}"><el-input v-model="form.accountId"></el-input></el-form-item>
-				<el-form-item th:label="#{用户名称}"><el-input v-model="form.accountNm"></el-input></el-form-item>
-				<el-form-item th:label="#{是否可用}">
-					<el-checkbox-group v-model="form.enabled" size="small">
-						<el-checkbox th:label="可用" name="enabled" border checked></el-checkbox>
-						<el-checkbox th:label="不可用" name="enabled" border checked></el-checkbox>
-					</el-checkbox-group>
-				</el-form-item>
-				<el-form-item th:label="#{是否锁定}">
-					<el-checkbox-group v-model="form.nonLocked" size="small">
-						<el-checkbox th:label="锁定" name="nonLocked" border checked></el-checkbox>
-						<el-checkbox th:label="未锁定" name="nonLocked" border checked></el-checkbox>
-					</el-checkbox-group>
-				</el-form-item>
+				<el-row>
+					<el-col :span="5">
+						<el-form-item th:label="#{帐号ID}"><el-input v-model="form.accountId"></el-input></el-form-item>
+					</el-col>
+					<el-col :span="5">
+						<el-form-item th:label="#{用户名称}"><el-input v-model="form.accountNm"></el-input></el-form-item>
+					</el-col>
+				</el-row>
+				<el-row>
+					<el-col :span="5">
+						<el-form-item th:label="#{是否可用}">
+							<el-checkbox-group v-model="form.enabled" size="small">
+								<el-checkbox th:label="可用" name="enabled" border checked></el-checkbox>
+								<el-checkbox th:label="不可用" name="enabled" border checked></el-checkbox>
+							</el-checkbox-group>
+						</el-form-item>
+					</el-col>
+					<el-col :span="5">
+						<el-form-item th:label="#{是否锁定}">
+							<el-checkbox-group v-model="form.nonLocked" size="small">
+								<el-checkbox th:label="锁定" name="nonLocked" border checked></el-checkbox>
+								<el-checkbox th:label="未锁定" name="nonLocked" border checked></el-checkbox>
+							</el-checkbox-group>
+						</el-form-item>
+					</el-col>
+				</el-row>
 			</el-form>
 		</div>
 		
@@ -61,32 +73,10 @@
 						accountNm: '',
 						enabled: [],
 						nonLocked: [],
-						nonExpired: '',
-						credentialsNonExpired: ''
+						nonExpired: [],
+						credentialsNonExpired: []
 					},
 					tableData: [{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
-						date: '234'
-					},{
 						date: '234'
 					},{
 						date: '234'

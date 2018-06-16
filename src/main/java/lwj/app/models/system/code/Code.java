@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lwj.app.config.i18n.MessageSource;
 import lwj.app.models.Base;
 
 /**
@@ -42,6 +43,20 @@ public class Code extends Base {
 	/** 名 */
 	@Column(length=50, nullable=false)
 	private String name;
+	
+	/** 名通过国际化取得 */
+	public String getName() {
+		String name = null;
+		try {
+			name = new MessageSource().getMessage(this.name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		name = (null == name || "".equals(name)) ? this.name : name;
+		
+		return name;
+	}
 
 	/** 描述 */
 	@Column(length=250)

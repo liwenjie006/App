@@ -2,6 +2,7 @@ package lwj.app;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
@@ -45,9 +48,6 @@ public class AppWeb {
 	 */
 	@RequestMapping("/")
 	public String index() throws Exception {
-		
-		log.print("into -> index");
-		
 		return "index";
 	}
 	
@@ -57,9 +57,6 @@ public class AppWeb {
 	 */
 	@RequestMapping("/main")
 	public String main() throws Exception {
-		
-		log.print("into -> main");
-		
 		return "main/main";
 	}
 
@@ -68,12 +65,16 @@ public class AppWeb {
 	 * @return
 	 */
 	@RequestMapping("/v/{folder}/{type}")
-	public String view(@PathVariable("folder") String folder, 
-			@PathVariable("type") String type) throws Exception {
+	public ModelAndView view(@PathVariable("folder") String folder, @PathVariable("type") String type,
+			@RequestParam Map<String, Object> params, ModelAndView mav) throws Exception {
 		
-		log.print("into -> " + folder + File.separator + type);
+		log.print("into -> " + folder + File.separator + type +
+				", params -> " + params);
 		
-		return folder + File.separator + type;
+		mav.addAllObjects(params);
+		mav.setViewName(folder + File.separator + type);
+		
+		return mav;
 	}
 	
 	/**
@@ -81,12 +82,16 @@ public class AppWeb {
 	 * @return
 	 */
 	@RequestMapping("/v/{folder}/{model}/{type}")
-	public String view(@PathVariable("folder") String folder, @PathVariable("model") String model, 
-			@PathVariable("type") String type) throws Exception {
+	public ModelAndView view(@PathVariable("folder") String folder, @PathVariable("model") String model, @PathVariable("type") String type,
+			@RequestParam Map<String, Object> params, ModelAndView mav) throws Exception {
 		
-		log.print("into -> " + folder + File.separator + model + File.separator + model + "_" + type);
+		log.print("into -> " + folder + File.separator + model + File.separator + model + "_" + type +
+				", params -> " + params);
 		
-		return folder + File.separator + model + File.separator + model + "_" + type;
+		mav.addAllObjects(params);
+		mav.setViewName(folder + File.separator + model + File.separator + model + "_" + type);
+		
+		return mav;
 	}
 	
 	/**
