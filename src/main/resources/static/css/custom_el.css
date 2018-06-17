@@ -1,0 +1,4 @@
+@CHARSET "UTF-8";
+.el-table th>.cell {
+	text-align: center;
+}

@@ -1,5 +1,10 @@
 /*<![CDATA[*/
 var util = {
+		/* 按窗口变化调整table高度 */
+		resize: function () {
+			
+		},
+		
 		/* 自定义alert */
 		alert: function (title, msg, buttonLabel, fun) {
 			new ax5.ui.dialog().alert({

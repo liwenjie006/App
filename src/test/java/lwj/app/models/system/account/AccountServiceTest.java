@@ -63,14 +63,6 @@ public class AccountServiceTest {
 	}
 
 	@Test
-	public void testFind() {
-		List<Account> result = service.find("admin", "超级管理员", true);
-		
-		assertThat(result).isNotNull();
-		assertThat(result).asList();
-	}
-	
-	@Test
 	public void testSave() throws Exception {
 		Account account = new Account();
 		

@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"/>
 		<link rel="stylesheet" type="text/css" href="/css/normalize.css"/>
 		<link rel="stylesheet" type="text/css" href="/css/main.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/custom_el.css"/>
 	</div>
 	
 	<!-- 共同JS -->
@@ -16,19 +17,35 @@
 		<!-- 全局变量设置 -->
 		<script type="text/javascript">
         /*<![CDATA[*/
-        var appMsg = {
-            loadingMsg: "[[#{请求处理中}]]",
-            systemAlterTitle: "[[#{系统提示}]]",
-            systemAlterButton: "[[#{返回登录界面}]]",
-            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
-            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
-        }
-
-        var appCsrf = {
-            csrf_parameter: "[[${_csrf.parameterName}]]",
-            csrf_header: "[[${_csrf.headerName}]]",
-            csrf_token: "[[${_csrf.token}]]"
-        }
+        	/* 公用信息变量 */
+	        var appMsg = {
+	            loadingMsg: "[[#{请求处理中}]]",
+	            systemAlterTitle: "[[#{系统提示}]]",
+	            systemAlterButton: "[[#{返回登录界面}]]",
+	            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
+	            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
+	        }
+	        /* csrf信息变量 */
+	        var appCsrf = {
+	            csrf_parameter: "[[${_csrf.parameterName}]]",
+	            csrf_header: "[[${_csrf.headerName}]]",
+	            csrf_token: "[[${_csrf.token}]]"
+	        }
+	        /* 子窗口高度自动调整函数 */
+	        function resize() {
+        		let body = document.body;
+        		let search_form = document.getElementsByClassName("search_form");
+        		let buttons = document.getElementsByClassName("buttons");
+        		let table = document.getElementsByClassName("table");
+        		let input = document.getElementsByClassName("input");
+        		
+        		let body_offsetHeight = body.offsetHeight;
+        		let search_from_offsetHeight = search_form.length > 0 ? search_form[0].offsetHeight : 0;
+        		let buttons_offsetHeight = buttons.length > 0 ? buttons[0].offsetHeight : 0;
+        		
+        		table[0].style.height = body_offsetHeight - search_from_offsetHeight - buttons_offsetHeight - 30 + "px";
+        		input[0].style.height = body_offsetHeight - search_from_offsetHeight - buttons_offsetHeight - 32 + "px";
+			}
         /*]]>*/
 		</script>
 		

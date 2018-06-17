@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head></head>
-<body>
+<body onload="resize();" onresize="resize();">
 	<!-- 引入CSS -->
 	<div th:include="main/import :: css"></div>
 	
@@ -10,10 +10,10 @@
 		<div class="search_form">
 			<el-form id="form" ref="form" :inline="true" :model="form" label-width="100px" label-suffix=":" size="small">
 				<el-row>
-					<el-col :span="5">
+					<el-col :span="6">
 						<el-form-item th:label="#{帐号ID}"><el-input v-model="form.accountId"></el-input></el-form-item>
 					</el-col>
-					<el-col :span="5">
+					<el-col :span="6">
 						<el-form-item th:label="#{是否可用}">
 							<el-checkbox-group v-model="form.enabled" size="small">
 								<el-checkbox th:label="#{可用}" name="enabled" border checked></el-checkbox>
@@ -21,7 +21,7 @@
 							</el-checkbox-group>
 						</el-form-item>
 					</el-col>
-					<el-col :span="5">
+					<el-col :span="6">
 						<el-form-item th:label="#{是否过期}">
 							<el-checkbox-group v-model="form.nonExpired" size="small">
 								<el-checkbox th:label="#{过期}" name="nonExpired" border checked></el-checkbox>
@@ -31,10 +31,10 @@
 					</el-col>
 				</el-row>
 				<el-row>
-					<el-col :span="5">
+					<el-col :span="6">
 						<el-form-item th:label="#{用户名称}"><el-input v-model="form.accountNm"></el-input></el-form-item>
 					</el-col>
-					<el-col :span="5">
+					<el-col :span="6">
 						<el-form-item th:label="#{是否锁定}">
 							<el-checkbox-group v-model="form.nonLocked" size="small">
 								<el-checkbox th:label="#{锁定}" name="nonLocked" border checked></el-checkbox>
@@ -42,7 +42,7 @@
 							</el-checkbox-group>
 						</el-form-item>
 					</el-col>
-					<el-col :span="5">
+					<el-col :span="6">
 						<el-form-item th:label="#{凭证是否过期}">
 							<el-checkbox-group v-model="form.credentialsNonExpired" size="small">
 								<el-checkbox th:label="#{过期}" name="credentialsNonExpired" border checked></el-checkbox>
@@ -55,7 +55,7 @@
 		</div>
 		
 		<!-- 按钮组 -->
-		<div id="buttons" class="buttons">
+		<div class="buttons">
 			<el-button size="small" icon="el-icon-search" th:text="#{检索}"></el-button>
 			<el-button size="small" icon="el-icon-circle-plus-outline" th:text="#{登录}"></el-button>
 			<el-button size="small" icon="el-icon-edit-outline" th:text="#{修改}"></el-button>
@@ -64,22 +64,32 @@
 		</div>
 		
 		<!-- 列表 -->
-		<el-table id="table" :data="tableData" style="width: 100%" height="300" size="small"
-				border stripe highlight-current-row @current-change="handleCurrentChange"
-				tooltip-effect="dark" th:empty-text="#{暂无数据}">
-			<el-table-column type="index" sortable width="36" fixed></el-table-column>
-			<el-table-column type="selection" width="36" fixed></el-table-column>
-			<el-table-column prop="accountCd" th:label="#{帐号CD}" sortable fixed></el-table-column>
-			<el-table-column prop="accountId" th:label="#{帐号ID}" sortable fixed></el-table-column>
-			<el-table-column prop="accountNm" th:label="#{用户名称}" sortable></el-table-column>
-			<el-table-column prop="userBirthday" th:label="#{生日}" ></el-table-column>
-			<el-table-column prop="userPhoto" th:label="#{照片}" ></el-table-column>
-			<el-table-column prop="date" th:label="#{是否可用}" ></el-table-column>
-			<el-table-column prop="nonLocked" th:label="#{是否锁定}" ></el-table-column>
-			<el-table-column prop="nonExpired" th:label="#{是否过期}" ></el-table-column>
-			<el-table-column prop="credentialsNonExpired" th:label="#{凭证是否过期}" ></el-table-column>
-			<el-table-column prop="userDesc" th:label="#{介绍}" ></el-table-column>
-		</el-table>
+		<el-row>
+			<el-col :span="7">
+				<el-table class="table" :data="tableData" style="width: 100%" height="350" size="mini"
+						border stripe highlight-current-row @current-change="handleCurrentChange"
+						tooltip-effect="dark" th:empty-text="#{暂无数据}">
+					<el-table-column type="index" sortable width="36" fixed></el-table-column>
+					<el-table-column type="selection" width="36" fixed></el-table-column>
+					<el-table-column prop="accountCd" th:label="#{帐号CD}" sortable fixed></el-table-column>
+					<el-table-column prop="accountId" th:label="#{帐号ID}" sortable></el-table-column>
+					
+				</el-table>
+			</el-col>
+			<el-col :span="17" style="padding-left: 20px;">
+				<el-card class="input" shadow="never">
+					<div slot="header">
+						<span>卡片名称</span>
+						<el-button size="mini" icon="el-icon-download" th:text="#{导出}"></el-button>
+					</div>
+					<div>
+						卡片名称
+						</br>
+						卡片名称
+					</div>
+				</el-card>
+			</el-col>
+		</el-row>
 	</div>
 	
 	<!-- 引入JS -->
@@ -103,15 +113,15 @@
 				}
 			},
 			created: function () {
-				
+				this.search();
 			},
 			methods: {
 				search() {
 					// 检索
-					axiosUtil.post("/mainMenu", vue.form, function (result) {
+					axiosUtil.post("/user/search", this.form, function (result) {
 						vue.tableData = result;
 					}, this, true);
-				}
+				},
 				handleCurrentChange(val) {
 					this.currentRow = val;
 				}
