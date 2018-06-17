@@ -38,7 +38,7 @@ public class User extends Account {
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
-	/** 描述 */
+	/** 介绍 */
 	@Column(length=250, nullable=false)
 	private String userDesc;
 	

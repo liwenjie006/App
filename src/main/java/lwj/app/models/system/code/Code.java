@@ -2,6 +2,7 @@ package lwj.app.models.system.code;
 
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lwj.app.config.i18n.MessageSource;
+import lwj.app.config.i18n.MessageSourceUtil;
 import lwj.app.models.Base;
 
 /**
@@ -32,6 +34,10 @@ import lwj.app.models.Base;
 @ToString(callSuper=false, exclude={ "topCode", "codes" })
 public class Code extends Base {
 
+	@Resource
+	@Transient
+	private MessageSourceUtil messageSourceUtil;
+	
 	/** serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
@@ -48,7 +54,7 @@ public class Code extends Base {
 	public String getName() {
 		String name = null;
 		try {
-			name = new MessageSource().getMessage(this.name);
+			name = messageSourceUtil.getMessage(this.name);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

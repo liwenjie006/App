@@ -5,6 +5,7 @@ import java.util.Locale;
 import javax.annotation.Resource;
 
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,19 +14,19 @@ import org.springframework.stereotype.Service;
   *
   */
 @Service
-public class MessageSource {
+public class MessageSourceUtil {
 
 	@Resource
 	private ApplicationContext context;
 	
-	private Locale locale = Locale.CHINESE;
+	private Locale LOCALE = LocaleContextHolder.getLocale();
 	
 	/**
 	 * 设定国际编码
 	 * @param locale
 	 */
 	public void setLocale(Locale lc) {
-		locale = lc;
+		LOCALE = lc;
 	}
 	
 	/**
@@ -33,17 +34,17 @@ public class MessageSource {
 	 * @return
 	 */
 	public Locale getLocale() {
-		return locale;
+		return LOCALE;
 	}
 	
 	/**
 	 * 取得对应字符
 	 * @param code String
-	 * @param locale Locale
+	 * @param LOCALE Locale
 	 * @return String
 	 */
 	public String getMessage(String code, Locale locale) throws Exception {
-		return context.getMessage(code, null, "Code name is not exist", locale);
+		return context.getMessage(code, null, "", locale);
 	}
 	
 	/**
@@ -54,7 +55,7 @@ public class MessageSource {
 	 * @return String
 	 */
 	public String getMessage(String code, Object[] args, Locale locale) throws Exception {
-		return context.getMessage(code, args, "Code name is not exist", locale);
+		return context.getMessage(code, args, "", locale);
 	}
 	
 	/**
@@ -63,7 +64,7 @@ public class MessageSource {
 	 * @return String
 	 */
 	public String getMessage(String code) throws Exception {
-		return getMessage(code, locale);
+		return getMessage(code, LOCALE);
 	};
 	
 	/**
@@ -73,7 +74,7 @@ public class MessageSource {
 	 * @return String
 	 */
 	public String getMessage(String code, Object[] args) throws Exception {
-		return getMessage(code, args, locale);
+		return getMessage(code, args, LOCALE);
 	};
 	
 }

@@ -32,7 +32,7 @@ var axiosUtil = {
     	
         // 头部加上Spring CSRF 信息
         this._axios.defaults.headers.common[appCsrf.csrf_header] = appCsrf.csrf_token;
-
+        
         this._axios.post(url, data)
             .then(function (response) {
                 /*

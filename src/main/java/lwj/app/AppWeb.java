@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +37,8 @@ public class AppWeb {
 
 	private LogUtil log = new LogUtil(AppWeb.class);
 	
-	@Autowired
+	@Resource
 	private AccountService accountService;
-	
-	
 	
 	/**
 	 * 根路径配置
