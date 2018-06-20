@@ -8,7 +8,10 @@ server:
 
 
 spring:
-
+  devtools:
+    restart:
+      enabled: true
+      
   messages.basename: i18n/messages
   
   datasource:

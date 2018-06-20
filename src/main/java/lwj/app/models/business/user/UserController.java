@@ -1,11 +1,13 @@
 package lwj.app.models.business.user;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -35,11 +37,12 @@ public class UserController {
 	 * @return 账户信息列表
 	 */
 	@RequestMapping("/search")
-	public List<User> search(User user) throws Exception {
+	public List<User> search(@RequestParam Map<String, Object> params) throws Exception {
 		
-		logUtil.print(user);
+		logUtil.print(params);
+		logUtil.print(userService.findUserList(params));
 		
-		return userService.find();
+		return userService.findUserList(params);
 	}
 	
 	

@@ -15,18 +15,18 @@
 					</el-col>
 					<el-col :span="6">
 						<el-form-item th:label="#{是否可用}">
-							<el-checkbox-group v-model="form.enabled" size="small">
-								<el-checkbox th:label="#{可用}" name="enabled" border checked></el-checkbox>
-								<el-checkbox th:label="#{不可用}" name="enabled" border checked></el-checkbox>
-							</el-checkbox-group>
+							<el-select v-model="form.enabled">
+								<el-option key="" th:label="#{全部}" value=""></el-option>
+								<el-option v-for="item in code.enabled" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item th:label="#{是否过期}">
-							<el-checkbox-group v-model="form.nonExpired" size="small">
-								<el-checkbox th:label="#{过期}" name="nonExpired" border checked></el-checkbox>
-								<el-checkbox th:label="#{未过期}" name="nonExpired" border checked></el-checkbox>
-							</el-checkbox-group>
+							<el-select v-model="form.nonExpired">
+								<el-option key="" th:label="#{全部}" value=""></el-option>
+								<el-option v-for="item in code.nonExpired" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -36,18 +36,18 @@
 					</el-col>
 					<el-col :span="6">
 						<el-form-item th:label="#{是否锁定}">
-							<el-checkbox-group v-model="form.nonLocked" size="small">
-								<el-checkbox th:label="#{锁定}" name="nonLocked" border checked></el-checkbox>
-								<el-checkbox th:label="#{未锁定}" name="nonLocked" border checked></el-checkbox>
-							</el-checkbox-group>
+							<el-select v-model="form.nonLocked">
+								<el-option key="" th:label="#{全部}" value=""></el-option>
+								<el-option v-for="item in code.nonLocked" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
 						</el-form-item>
 					</el-col>
 					<el-col :span="6">
 						<el-form-item th:label="#{凭证是否过期}">
-							<el-checkbox-group v-model="form.credentialsNonExpired" size="small">
-								<el-checkbox th:label="#{过期}" name="credentialsNonExpired" border checked></el-checkbox>
-								<el-checkbox th:label="#{未过期}" name="credentialsNonExpired" border checked></el-checkbox>
-							</el-checkbox-group>
+							<el-select v-model="form.credentialsNonExpired">
+								<el-option key="" th:label="#{全部}" value=""></el-option>
+								<el-option v-for="item in code.credentialsNonExpired" :key="item.value" :label="item.label" :value="item.value"></el-option>
+							</el-select>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -56,11 +56,11 @@
 		
 		<!-- 按钮组 -->
 		<div class="buttons">
-			<el-button size="small" icon="el-icon-search" th:text="#{检索}"></el-button>
-			<el-button size="small" icon="el-icon-circle-plus-outline" th:text="#{登录}"></el-button>
-			<el-button size="small" icon="el-icon-edit-outline" th:text="#{修改}"></el-button>
-			<el-button size="small" icon="el-icon-remove-outline" th:text="#{删除}"></el-button>
-			<el-button size="small" icon="el-icon-download" th:text="#{导出}"></el-button>
+			<el-button size="small" icon="el-icon-search" th:text="#{检索}" v-on:click="search"></el-button>
+			<el-button size="small" icon="el-icon-circle-plus-outline" th:text="#{登录}" v-on:click="add"></el-button>
+			<el-button size="small" icon="el-icon-edit-outline" th:text="#{修改}" v-on:click="up"></el-button>
+			<el-button size="small" icon="el-icon-remove-outline" th:text="#{删除}" v-on:click="del"></el-button>
+			<el-button size="small" icon="el-icon-download" th:text="#{导出}" v-on:click="excel"></el-button>
 		</div>
 		
 		<!-- 列表 -->
@@ -101,13 +101,14 @@
 			el: '#app',
 			data: function() {
 				return {
+					code: code,
 					form: {
 						accountId: '',
 						accountNm: '',
-						enabled: [],
-						nonLocked: [],
-						nonExpired: [],
-						credentialsNonExpired: []
+						enabled: '',
+						nonLocked: '',
+						nonExpired: '',
+						credentialsNonExpired: ''
 					},
 					tableData: []
 				}
@@ -116,11 +117,27 @@
 				this.search();
 			},
 			methods: {
-				search() {
-					// 检索
+				// 检索
+				search: function() {
 					axiosUtil.post("/user/search", this.form, function (result) {
 						vue.tableData = result;
 					}, this, true);
+				},
+				// 添加
+				add: function() {
+					
+				},
+				// 修改
+				up: function() {
+					
+				},
+				// 删除
+				del: function() {
+					
+				},
+				// 到处Excel
+				excel: function() {
+					
 				},
 				handleCurrentChange(val) {
 					this.currentRow = val;

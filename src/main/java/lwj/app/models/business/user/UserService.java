@@ -1,6 +1,7 @@
 package lwj.app.models.business.user;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -32,6 +33,10 @@ public class UserService extends BaseService<User> {
 	 */
 	public List<User> find() {
 		return userRepository.findAll();
+	}
+	
+	public List<User> findUserList(Map<String, Object> params) {
+		return userRepository.findUserList("","","","","","");
 	}
 	
 }

@@ -25,12 +25,22 @@
 	            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
 	            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
 	        }
+        
 	        /* csrf信息变量 */
 	        var appCsrf = {
 	            csrf_parameter: "[[${_csrf.parameterName}]]",
 	            csrf_header: "[[${_csrf.headerName}]]",
 	            csrf_token: "[[${_csrf.token}]]"
 	        }
+        
+        	/* 共同代码 */
+	        var code = {
+	        		enabled: [{label: "[[#{可用}]]", value: 1}, {label: "[[#{不可用}]]", value: 0}],
+	        		nonLocked: [{label: "[[#{未锁定}]]", value: 1}, {label: "[[#{锁定}]]", value: 0}],
+	        		nonExpired: [{label: "[[#{未过期}]]", value: 1}, {label: "[[#{过期}]]", value: 0}],
+	        		credentialsNonExpired: [{label: "[[#{未过期}]]", value: 1}, {label: "[[#{过期}]]", value: 0}]
+	        }
+        
 	        /* 子窗口高度自动调整函数 */
 	        function resize() {
         		let body = document.body;
