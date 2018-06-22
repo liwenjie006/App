@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import lwj.app.models.BaseService;
 import lwj.app.models.business.menu.Menu;
+import lwj.app.models.business.user.User;
 import lwj.app.utils.system.LogUtil;
 
 
@@ -60,6 +61,11 @@ public class AccountService extends BaseService<Account> {
 			});
 			menu.setSubMenu(menuList);
 		}
+	}
+	
+	public List<Account> findAccountList(Account user) {
+		return accountRepository.findAccountList(user.getAccountId(), user.getAccountNm(),
+				user.getEnabled(), user.getNonLocked(), user.getNonExpired(), user.getCredentialsNonExpired());
 	}
 	
 }

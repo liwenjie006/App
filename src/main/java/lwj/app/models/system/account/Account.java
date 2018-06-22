@@ -79,16 +79,16 @@ public class Account extends Base {
 	private String accountNm;
 
 	/** 未锁定 */
-	@Column(nullable=false)
-	private boolean nonLocked = true;
+	@Column(length=1, nullable=false)
+	private String nonLocked = "Y";
 
 	/** 未过期 */
-	@Column(nullable=false)
-	private boolean nonExpired = true;
+	@Column(length=1, nullable=false)
+	private String nonExpired = "Y";
 
 	/** 凭证未过期 */
-	@Column(nullable=false)
-	private boolean credentialsNonExpired = true;
+	@Column(length=1, nullable=false)
+	private String credentialsNonExpired = "Y";
 
 	/** 手机 */
 	@Column(length=20, unique=true, nullable=false)

@@ -35,8 +35,9 @@ public class UserService extends BaseService<User> {
 		return userRepository.findAll();
 	}
 	
-	public List<User> findUserList(Map<String, Object> params) {
-		return userRepository.findUserList("","","","","","");
+	public List<User> findUserList(User user) {
+		return userRepository.findUserList(user.getAccountId(), user.getAccountNm(),
+				user.getEnabled(), user.getNonLocked(), user.getNonExpired(), user.getCredentialsNonExpired());
 	}
 	
 }

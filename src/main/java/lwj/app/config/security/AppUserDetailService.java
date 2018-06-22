@@ -50,7 +50,10 @@ public class AppUserDetailService implements UserDetailsService {
 		}
 		
 		return new User(username, account.getAccountPw(), 
-				account.isEnabled(), account.isNonExpired(), account.isCredentialsNonExpired(), account.isNonLocked(), grantedAuthority);
+				account.getEnabled().equals("Y") ? true : false,
+				account.getNonExpired().equals("Y") ? true : false,
+				account.getCredentialsNonExpired().equals("Y") ? true : false,
+				account.getNonLocked().equals("Y") ? true : false, grantedAuthority);
 		
 	}
 	

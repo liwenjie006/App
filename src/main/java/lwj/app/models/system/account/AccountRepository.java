@@ -4,9 +4,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import lwj.app.models.BaseRepository;
 import lwj.app.models.business.menu.Menu;
+import lwj.app.models.business.user.User;
 
 /**
  * 帐号
@@ -51,8 +53,32 @@ public interface AccountRepository extends BaseRepository<Account, Serializable>
 	 * @param mlevel
 	 * @return 菜单列表
 	 */
-	@Query("SELECT m FROM Account a JOIN a.menus m WHERE a.accountCd = ?1 AND (m.topMenu.menuCd = ?2 OR 0 = ?2) AND m.mlevel = ?3")
-	public List<Menu> findSubMenus(int accountCd, int menuCd, int mlevel);
+	@Query("SELECT m FROM Account a JOIN a.menus m "
+			+ "WHERE a.accountCd = :accountCd AND (m.topMenu.menuCd = :menuCd OR 0 = :menuCd) AND m.mlevel = :mlevel")
+	public List<Menu> findSubMenus(@Param("accountCd") int accountCd, @Param("menuCd") int menuCd, @Param("mlevel") int mlevel);
 	
+	/**
+	 * 用户检索
+	 * @param accountId
+	 * @param accountNm
+	 * @param enabled
+	 * @param nonLocked
+	 * @param nonExpired
+	 * @param credentialsNonExpired
+	 * @return 用户列表
+	 */
+	@Query("SELECT a "
+			+ "FROM Account a "
+			+ "WHERE a.accountId LIKE %:accountId% "
+			+ "AND a.accountNm LIKE %:accountNm% "
+			+ "AND a.enabled LIKE :enabled% "
+			+ "AND a.nonLocked LIKE :nonLocked% "
+			+ "AND a.nonExpired LIKE :nonExpired% "
+			+ "AND a.credentialsNonExpired LIKE :credentialsNonExpired% "
+			)
+	public List<Account> findAccountList(@Param("accountId") String accountId,
+			@Param("accountNm") String accountNm, @Param("enabled") String enabled,
+			@Param("nonLocked") String nonLocked, @Param("nonExpired") String nonExpired,
+			@Param("credentialsNonExpired") String credentialsNonExpired);
 	
 }

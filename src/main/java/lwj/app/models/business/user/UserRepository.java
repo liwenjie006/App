@@ -23,6 +23,16 @@ public interface UserRepository extends BaseRepository<User, Serializable> {
 	 */
 	public User findOneByAccountId(String accountId);
 	
+	/**
+	 * 用户检索
+	 * @param accountId
+	 * @param accountNm
+	 * @param enabled
+	 * @param nonLocked
+	 * @param nonExpired
+	 * @param credentialsNonExpired
+	 * @return 用户列表
+	 */
 	@Query("SELECT u "
 			+ "FROM User u "
 			+ "WHERE u.accountId LIKE %:accountId% "
@@ -30,10 +40,11 @@ public interface UserRepository extends BaseRepository<User, Serializable> {
 			+ "AND u.enabled LIKE :enabled% "
 			+ "AND u.nonLocked LIKE :nonLocked% "
 			+ "AND u.nonExpired LIKE :nonExpired% "
-			+ "AND u.credentialsNonExpired LIKE :credentialsNonExpired + '%' "
+			+ "AND u.credentialsNonExpired LIKE :credentialsNonExpired% "
 			)
 	public List<User> findUserList(@Param("accountId") String accountId,
 			@Param("accountNm") String accountNm, @Param("enabled") String enabled,
 			@Param("nonLocked") String nonLocked, @Param("nonExpired") String nonExpired,
 			@Param("credentialsNonExpired") String credentialsNonExpired);
+	
 }

@@ -119,7 +119,7 @@
 			methods: {
 				// 检索
 				search: function() {
-					axiosUtil.post("/user/search", this.form, function (result) {
+					axiosUtil.post("/account/search", this.form, function (result) {
 						vue.tableData = result;
 					}, this, true);
 				},

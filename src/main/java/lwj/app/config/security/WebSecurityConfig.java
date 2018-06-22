@@ -30,7 +30,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void init(WebSecurity web) throws Exception {
 		super.init(web);
 		// 设置不拦截规则  
-        web.ignoring().antMatchers("/css/**", "/img/**", "/js/**", "/webjars/**", "/libs/**", "/favicon.ico", "/error/**");
+        web.ignoring().antMatchers("/css/**", "/img/**", "/js/**", "/libs/**",
+        		"/favicon.ico", "/error/**");
     }
 
 	/**

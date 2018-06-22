@@ -34,8 +34,8 @@ public class Base implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/** 是否使用 */
-	@Column(nullable=false)
-	protected boolean enabled = true;
+	@Column(length=1, nullable=false)
+	protected String enabled = "Y";
 	
 	/** 登录用户 */
 	@OneToOne(cascade=CascadeType.REFRESH, fetch=FetchType.LAZY)

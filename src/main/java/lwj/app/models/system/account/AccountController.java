@@ -1,4 +1,4 @@
-package lwj.app.models.business.user;
+package lwj.app.models.system.account;
 
 import java.util.List;
 
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import lwj.app.utils.system.LogUtil;
 
 /**
- * 用户管理
+ * 账户管理
  * @author LF
  *
  */
 @RestController
 @Transactional
 @SessionAttributes({ "sa_account" })
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/account")
+public class AccountController {
 
 	private LogUtil logUtil = new LogUtil(getClass());
 	
 	@Resource
-	private UserService userService;
+	private AccountService accountService;
 	
 	
 	
@@ -36,12 +36,8 @@ public class UserController {
 	 * @return 账户信息列表
 	 */
 	@RequestMapping("/search")
-	public List<User> search(@RequestBody User user) throws Exception {
-		
-		logUtil.print(user);
-		logUtil.print(userService.findUserList(user));
-		
-		return userService.findUserList(user);
+	public List<Account> search(@RequestBody Account account) throws Exception {
+		return accountService.findAccountList(account);
 	}
 	
 	
