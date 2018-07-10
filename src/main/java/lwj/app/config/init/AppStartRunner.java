@@ -105,11 +105,11 @@ public class AppStartRunner implements ApplicationRunner {
 		}
 		
 		// 中文
-		Code zhCode = codeRepository.findOneByName("中文");
+		Code zhCode = codeRepository.findOneByName("zh");
 		if (null == zhCode) {
 			zhCode = new Code();
-			zhCode.setName("中文");
-			zhCode.setCodeDesc("中文");
+			zhCode.setName("zh");
+			zhCode.setCodeDesc("zh");
 			zhCode.setInUser(account);
 			zhCode.setInDtm(new Date());
 			zhCode.setInIp(IP);
@@ -118,11 +118,11 @@ public class AppStartRunner implements ApplicationRunner {
 		}
 		
 		// 英文
-		Code enCode = codeRepository.findOneByName("English");
+		Code enCode = codeRepository.findOneByName("en");
 		if (null == enCode) {
 			enCode = new Code();
-			enCode.setName("English");
-			enCode.setCodeDesc("English");
+			enCode.setName("en");
+			enCode.setCodeDesc("en");
 			enCode.setInUser(account);
 			enCode.setInDtm(new Date());
 			enCode.setInIp(IP);
@@ -131,11 +131,11 @@ public class AppStartRunner implements ApplicationRunner {
 		}
 		
 		// 韩文
-		Code krCode = codeRepository.findOneByName("한국어");
+		Code krCode = codeRepository.findOneByName("ko");
 		if (null == krCode) {
 			krCode = new Code();
-			krCode.setName("한국어");
-			krCode.setCodeDesc("한국어");
+			krCode.setName("ko");
+			krCode.setCodeDesc("ko");
 			krCode.setInUser(account);
 			krCode.setInDtm(new Date());
 			krCode.setInIp(IP);
@@ -147,7 +147,7 @@ public class AppStartRunner implements ApplicationRunner {
 		Yaml yaml = new Yaml();
 		URL url = getClass().getResource("messages.yml");
         if (url != null) {
-        	String lanText = String.valueOf(yaml.load(new FileInputStream(url.getFile())));
+        	String lanText = yaml.load(new FileInputStream(url.getFile()));
         	String[] lans = lanText.split(SPLIT);
         	for (String lan : lans) {
         		Lan lanTmp = lanRepository.findOneByLanId(lan);
@@ -159,6 +159,11 @@ public class AppStartRunner implements ApplicationRunner {
         			lanTmp.setInUser(account);
         			lanTmp.setInDtm(new Date());
         			lanTmp.setInIp(IP);
+        			
+        			log.print(zhCode);
+        			
+        			log.print(lanTmp);
+        			
         			lanRepository.save(lanTmp);
         		}
         	}

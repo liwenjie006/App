@@ -44,7 +44,7 @@ public class Code extends Base {
 	/** 编码 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int code;
+	private int cd;
 
 	/** 名 */
 	@Column(length=50, nullable=false)
@@ -52,16 +52,7 @@ public class Code extends Base {
 	
 	/** 名通过国际化取得 */
 	public String getName() {
-		String name = null;
-		try {
-			name = messageSourceUtil.getMessage(this.name);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		name = (null == name || "".equals(name)) ? this.name : name;
-		
-		return name;
+		return this.name;
 	}
 
 	/** 描述 */

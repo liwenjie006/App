@@ -52,8 +52,7 @@ public class Lan extends Base {
 	private String lanNm;
 
 	/** 语言 */
-	@OneToOne(cascade= { CascadeType.REFRESH })
-	@NotBlank(message="语言不能为空")
+	@OneToOne(cascade={ CascadeType.REFRESH })
 	private Code language;
 	
 }

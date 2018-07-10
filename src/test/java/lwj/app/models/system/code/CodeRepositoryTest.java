@@ -54,9 +54,9 @@ public class CodeRepositoryTest {
 		repository.save(scd1);
 		repository.save(scd2);
 		
-		assertThat(tcd.getCode()).isNotNull();
-		assertThat(scd1.getCode()).isNotNull();
-		assertThat(scd2.getCode()).isNotNull();
+		assertThat(tcd.getCd()).isNotNull();
+		assertThat(scd1.getCd()).isNotNull();
+		assertThat(scd2.getCd()).isNotNull();
 	}
 
 	/**
