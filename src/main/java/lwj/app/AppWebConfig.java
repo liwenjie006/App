@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import lwj.app.config.exception.CustomErrorAttributes;
 import lwj.app.config.i18n.MessageResource;
 import lwj.app.utils.system.LogUtil;
 
@@ -55,6 +57,11 @@ public class AppWebConfig implements WebMvcConfigurer {
 	@Bean
 	public MessageSource messageSource() {
 		return new MessageResource();
+	}
+	
+	@Bean
+	public ErrorAttributes errorAttributes() {
+		return new CustomErrorAttributes();
 	}
 	
 	/**

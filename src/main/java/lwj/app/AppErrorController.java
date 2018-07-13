@@ -26,7 +26,7 @@ import lwj.app.utils.system.LogUtil;
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class AppErrorController extends AbstractErrorController {
 
-	private LogUtil logUtil = new LogUtil(AppErrorController.class);
+	private LogUtil log = new LogUtil(AppErrorController.class);
 	
 	public AppErrorController(ErrorAttributes errorAttributes) {
 		 super(errorAttributes);
@@ -53,7 +53,7 @@ public class AppErrorController extends AbstractErrorController {
 	/**
 	 * Json异常处理
 	 * @param request
-	 * @return
+	 * @return Json形式的错误信息
 	 */
 	@RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
@@ -112,5 +112,5 @@ public class AppErrorController extends AbstractErrorController {
 	public ModelAndView notPermissionsPage() {
 		return new ModelAndView("error/notPermissions");
 	}
-
+	
 }

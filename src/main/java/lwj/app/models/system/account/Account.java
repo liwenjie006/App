@@ -17,7 +17,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -65,18 +68,19 @@ public class Account extends Base {
 
 	/** 登录ID */
 	@Column(length=50, unique=true, nullable=false)
-	@NotBlank(message="帐号ID不能为空")
+	@Size(min=5, max=10, message="test{min} - {max}")
 	private String accountId;
 
 	/** 登录密码 */
 	@Column(length=60, nullable=false)
-	@NotBlank(message="帐号密码不能为空")
+//	@NotBlank(message="帐号密码不能为空")
 	private String accountPw;
 
 	/** 名 */
 	@Column(length=50, nullable=false)
-	@NotBlank(message="帐号名称不能为空")
+//	@NotBlank(message="帐号名称不能为空")
 	private String accountNm;
+	
 
 	/** 未锁定 */
 	@Column(length=1, nullable=false)
@@ -92,12 +96,12 @@ public class Account extends Base {
 
 	/** 手机 */
 	@Column(length=20, unique=true, nullable=false)
-	@NotBlank(message="手机号码不能为空")
+//	@NotBlank(message="手机号码不能为空")
 	private String tel;
 	
 	/** 邮箱 */
 	@Column(length=200, unique=true, nullable=false)
-	@NotBlank(message="邮箱不能为空")
+//	@NotBlank(message="邮箱不能为空")
 	private String email;
 	
 	

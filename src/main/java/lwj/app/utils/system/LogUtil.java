@@ -6,9 +6,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.LoggerFactory;
 
@@ -253,10 +257,10 @@ public class LogUtil {
 	}
 	
 	/**
-	 * 打印http参数信息
+	 * 打印Request参数信息
 	 * @param msg String
-	 *//*
-	public void printHttpServletRequest(HttpServletRequest request) {
+	 */
+	public void printRequest(HttpServletRequest request) {
 		logger.info("@@@@@START ++++++++++++++++++++++++++++++++++++++++++++@@@@@");
 		
 		Enumeration<String> parameterNames = request.getParameterNames();
@@ -275,11 +279,11 @@ public class LogUtil {
 		logger.info("***** END  --------------------------------------------*****");
 	}
 	
-	*//**
-	 * 打印http参数信息
+	/**
+	 * 打印Session参数信息
 	 * @param msg String
-	 *//*
-	public void printHttpSession(HttpSession session) {
+	 */
+	public void printSession(HttpSession session) {
 		logger.info("@@@@@START ++++++++++++++++++++++++++++++++++++++++++++@@@@@");
 		
 		Enumeration<String> attributeNames = session.getAttributeNames();
@@ -290,6 +294,6 @@ public class LogUtil {
 		}
 		
 		logger.info("***** END  --------------------------------------------*****");
-	}*/
+	}
 	
 }
