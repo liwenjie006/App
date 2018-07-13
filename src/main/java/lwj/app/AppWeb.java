@@ -45,7 +45,7 @@ public class AppWeb {
 	 * @return index.html
 	 */
 	@RequestMapping("/")
-	public String index() throws Exception {
+	public String index() {
 		return "index";
 	}
 	
@@ -54,7 +54,7 @@ public class AppWeb {
 	 * @return index.html
 	 */
 	@RequestMapping("/main")
-	public String main() throws Exception {
+	public String main() {
 		return "main/main";
 	}
 
@@ -64,7 +64,7 @@ public class AppWeb {
 	 */
 	@RequestMapping("/v/{folder}/{type}")
 	public ModelAndView view(@PathVariable("folder") String folder, @PathVariable("type") String type,
-			@RequestParam Map<String, Object> params, ModelAndView mav) throws Exception {
+			@RequestParam Map<String, Object> params, ModelAndView mav) {
 		
 		log.print("into -> " + folder + File.separator + type +
 				", params -> " + params);
@@ -80,8 +80,8 @@ public class AppWeb {
 	 * @return
 	 */
 	@RequestMapping("/v/{folder}/{model}/{type}")
-	public ModelAndView view(@PathVariable("folder") String folder, @PathVariable("model") String model, @PathVariable("type") String type,
-			@RequestParam Map<String, Object> params, ModelAndView mav) throws Exception {
+	public ModelAndView view(@PathVariable("folder") String folder, @PathVariable("model") String model,
+			@PathVariable("type") String type, @RequestParam Map<String, Object> params, ModelAndView mav) {
 		
 		log.print("into -> " + folder + File.separator + model + File.separator + model + "_" + type +
 				", params -> " + params);
@@ -98,7 +98,7 @@ public class AppWeb {
 	 */
 	@RequestMapping(value="/mainMenu", method=RequestMethod.POST)
 	@JsonView(SubMenuView.class)
-	public @ResponseBody List<Menu> mainMenu(@SessionAttribute("sa_account") Account account) throws Exception {
+	public @ResponseBody List<Menu> mainMenu(@SessionAttribute("sa_account") Account account) {
 		return accountService.getMenu(account);
 	}
 	

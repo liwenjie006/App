@@ -23,7 +23,7 @@ public class MessageResource extends AbstractResourceBasedMessageSource {
 	
 	@Override
 	protected MessageFormat resolveCode(String code, Locale locale) {
-		return new MessageFormat(service.getResource("登录", codeRepository.findOneByName(locale.getLanguage())));
+		return new MessageFormat(service.getResource(code, codeRepository.findOneByName(locale.getLanguage())));
 	}
 
 }

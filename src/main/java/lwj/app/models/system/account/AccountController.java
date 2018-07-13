@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,8 +37,13 @@ public class AccountController {
 	 * @return 账户信息列表
 	 */
 	@RequestMapping("/search")
-	public List<Account> search(@RequestBody Account account) throws Exception {
+	public List<Account> search(@RequestBody Account account) {
 		return accountService.findAccountList(account);
+	}
+	
+	@RequestMapping("/save")
+	public Account save(@Valid Account account) {
+		return account;
 	}
 	
 	

@@ -160,10 +160,6 @@ public class AppStartRunner implements ApplicationRunner {
         			lanTmp.setInDtm(new Date());
         			lanTmp.setInIp(IP);
         			
-        			log.print(zhCode);
-        			
-        			log.print(lanTmp);
-        			
         			lanRepository.save(lanTmp);
         		}
         	}
