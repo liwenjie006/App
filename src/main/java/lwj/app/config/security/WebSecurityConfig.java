@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		super.init(web);
 		// 设置不拦截规则  
         web.ignoring().antMatchers("/css/**", "/img/**", "/js/**", "/libs/**",
-        		"/favicon.ico", "/error/**");
+        		"/favicon.ico", "/error/**", "/account/**");
     }
 
 	/**

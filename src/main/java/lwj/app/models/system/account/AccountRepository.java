@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 import lwj.app.models.BaseRepository;
 import lwj.app.models.business.menu.Menu;
-import lwj.app.models.business.user.User;
 
 /**
  * 帐号

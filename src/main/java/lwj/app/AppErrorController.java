@@ -1,5 +1,6 @@
 package lwj.app;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ import lwj.app.utils.system.LogUtil;
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class AppErrorController extends AbstractErrorController {
 
-	private LogUtil logUtil = new LogUtil(AppErrorController.class);
+	private LogUtil log = new LogUtil(AppErrorController.class);
 	
 	public AppErrorController(ErrorAttributes errorAttributes) {
 		 super(errorAttributes);
@@ -46,26 +47,26 @@ public class AppErrorController extends AbstractErrorController {
 	public ModelAndView errorHtml(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView("error/error");
 		mav.addAllObjects(getErrorAttributes(request, false));
-		
 		return mav;
 	}
 
 	/**
 	 * Json异常处理
 	 * @param request
-	 * @return
+	 * @return Json形式的错误信息
 	 */
 	@RequestMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
-		return new ResponseEntity<Map<String, Object>>(getErrorAttributes(request, false), getStatus(request));
+		return new ResponseEntity<>(getErrorAttributes(request, false), getStatus(request));
 	}
 	
 	/**
 	 * Session超时处理
+	 * @throws IOException 
 	 */
 	@RequestMapping("/timeout")
-	public void timeout(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void timeout(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (request.getHeader("x-requested-with") != null
 				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // ajax 超时处理
 			response.getWriter().print("timeout"); // 设置超时标识
@@ -81,7 +82,7 @@ public class AppErrorController extends AbstractErrorController {
 	 * @return error/timeout
 	 */
 	@RequestMapping("/timeoutPage")
-	public ModelAndView timeoutPage() throws Exception {
+	public ModelAndView timeoutPage() {
 		return new ModelAndView("error/timeout");
 	}
 
@@ -89,9 +90,10 @@ public class AppErrorController extends AbstractErrorController {
 	 * 权限异常处理
 	 * 
 	 * @return error/notPermissions
+	 * @throws IOException 
 	 */
 	@RequestMapping("/notPermissions")
-	public void notPermissions(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void notPermissions(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		if (request.getHeader("x-requested-with") != null
 				&& request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest")) { // ajax 超时处理
 			response.getWriter().print("not permissions"); // 设置超时标识
@@ -107,8 +109,8 @@ public class AppErrorController extends AbstractErrorController {
 	 * @return error/notPermissions.html
 	 */
 	@RequestMapping("/notPermissionsPage")
-	public ModelAndView notPermissionsPage() throws Exception {
+	public ModelAndView notPermissionsPage() {
 		return new ModelAndView("error/notPermissions");
 	}
-
+	
 }

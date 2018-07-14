@@ -2,3 +2,7 @@
 .el-table th>.cell {
 	text-align: center;
 }
+.el-card__body {
+	height: calc(100% - 90px);
+	overflow: auto;
+}

@@ -6,7 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Study demo" />
     <meta name="author" content="lf" />
-	<title th:text="#{Study}"></title>
+	<title th:text="#{AppName}"></title>
+	
+	<script type="text/javascript">
+	/*<![CDATA[*/
+		/* csrf信息变量 */
+		const csrf_parameter = "[[${_csrf.parameterName}]]",
+		      csrf_header = "[[${_csrf.headerName}]]",
+		      csrf_token = "[[${_csrf.token}]]";
+	/*]]>*/
+	</script>
+	
+	<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
 	<!-- 引入CSS -->
@@ -20,6 +31,7 @@
 			min-width: 1600px;
 			height: 100%;
 			min-height: 600px;
+			overflow: auto;
 		}
 		.el-header { padding: 14px 20px; border-bottom: thin solid #dbdbdb; background-color: #F2F6FC; }
 		.el-header div { float: left; }
@@ -36,7 +48,7 @@
 			<el-header>
 				<div class="logo">
 					<img src="/img/login-logo.png" />
-					<span th:text="#{Study}"></span>
+					<span th:text="#{AppName}"></span>
 				</div>
 				<div class="title">
 				</div>
@@ -107,73 +119,8 @@
     
     <!-- 引入JS -->
     <div th:include="main/import :: js"></div>
-
-	<script type="text/javascript">
-	/*<![CDATA[*/
-		var vue = new Vue({
-			el: '#app',
-			data: function() {
-				return {
-					menuList: null,	// 菜单列表数据
-					tabs: [],		// 标签列表数据
-					activiTab: ''	// 当前标签
-				}
-			},
-			beforeCreate: function () {
-				// 取得菜单
-				axiosUtil.post("/mainMenu", null, function (result) {
-					vue.menuList = result;
-				}, this, true);
-			},
-			methods: {
-				logout() {
-					location.href = '/logout';
-				},
-				// 选择菜单事件
-				handleSelect(menu) {
-					this.addTab(menu.menuCd, menu.menuNm, menu.menuUrl.resourceUrl);
-				},
-				// 添加标签事件
-				addTab(menuCd, menuNm, menuUrl) {
-					// 判断是否为已打开的标签，已打开的标签直接选择标签
-					let isOpend = false;
-					this.tabs.forEach((tab, index) => {
-						if (menuCd === tab.name) {
-							isOpend = true;
-						}
-					});
-					
-					// 未打开时添加
-					if (!isOpend) {
-						// 取得菜单
-						vue.tabs.push({
-							title: menuNm,
-							name: menuCd,
-							content: '<iframe src="' + menuUrl + '" id="' + menuCd + '" scrolling="auto" width="100%" height="100%" '
-									+ 'frameborder="0" marginheight="0" marginwidth="0" />'
-						});
-					}
-					// 保存当前标签
-					this.activiTab = menuCd;
-				},
-				// 删除标签事件
-				removeTab(key) {
-					let tabs = this.tabs;
-					let activiTab = this.activiTab;
-					if (key === this.activiTab) {
-						tabs.forEach((tab, index) => {
-							if (key === tab.name) {
-								let nextTab = tabs[index + 1] || tabs[index - 1];
-								if (nextTab) activiTab = nextTab.name;
-							}
-						});
-					}
-			        this.activiTab = activiTab;
-			        this.tabs = tabs.filter(tab => tab.name !== key);
-				}
-		    }
-		});
-	/*]]>*/
-	</script>
+    
+	<script type="text/javascript" src="/js/main.js"></script>
+	
 </body>
 </html>

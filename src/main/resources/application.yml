@@ -17,9 +17,9 @@ spring:
   datasource:
     name: "app"
     driver-class-name: com.mysql.jdbc.Driver
-    url: "jdbc:mysql://192.168.0.31:3306/app?useSSL=false&characterEncoding=utf-8&useUnicode=true"
-    username: "lwj"
-    password: "lwj6TX006!"
+    url: "jdbc:mysql://localhost:3306/app?useSSL=false&characterEncoding=utf-8&useUnicode=true"
+    username: "root"
+    password: "123456"
     hikari:
       pool-name: "app-hikari-20"
       maximum-pool-size: 20

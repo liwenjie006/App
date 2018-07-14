@@ -17,30 +17,6 @@
 		<!-- 全局变量设置 -->
 		<script type="text/javascript">
         /*<![CDATA[*/
-        	/* 公用信息变量 */
-	        var appMsg = {
-	            loadingMsg: "[[#{请求处理中}]]",
-	            systemAlterTitle: "[[#{系统提示}]]",
-	            systemAlterButton: "[[#{返回登录界面}]]",
-	            systemAlterTimeoutMsg: "[[#{服务器连接超时，请重新登录}]]",
-	            systemAlterNoPermissionsMsg: "[[#{您因权限不足，无法访问该资源}]]"
-	        }
-        
-	        /* csrf信息变量 */
-	        var appCsrf = {
-	            csrf_parameter: "[[${_csrf.parameterName}]]",
-	            csrf_header: "[[${_csrf.headerName}]]",
-	            csrf_token: "[[${_csrf.token}]]"
-	        }
-        
-        	/* 共同代码 */
-	        var code = {
-	        		enabled: [{label: "[[#{可用}]]", value: "Y"}, {label: "[[#{不可用}]]", value: "N"}],
-	        		nonLocked: [{label: "[[#{未锁定}]]", value: "Y"}, {label: "[[#{锁定}]]", value: "N"}],
-	        		nonExpired: [{label: "[[#{未过期}]]", value: "Y"}, {label: "[[#{过期}]]", value: "N"}],
-	        		credentialsNonExpired: [{label: "[[#{未过期}]]", value: "Y"}, {label: "[[#{过期}]]", value: "N"}]
-	        }
-        
 	        /* 子窗口高度自动调整函数 */
 	        function resize() {
         		let body = document.body;
@@ -56,13 +32,13 @@
         		table[0].style.height = body_offsetHeight - search_from_offsetHeight - buttons_offsetHeight - 30 + "px";
         		input[0].style.height = body_offsetHeight - search_from_offsetHeight - buttons_offsetHeight - 32 + "px";
 			}
+        	// 设置主窗口vue变量到Iframe变量中
+        	var main = window.parent.main;
         /*]]>*/
 		</script>
 		
-		<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script>
 		<script type="text/javascript" src="https://unpkg.com/element-ui/lib/index.js"></script>
-	    <script type="text/javascript" src="/js/axiosUtil.js"></script>
 	    <script type="text/javascript" src="/js/util.js"></script>
 	</div>
 </body>

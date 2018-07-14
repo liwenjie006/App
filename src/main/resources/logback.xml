@@ -78,7 +78,7 @@
 		<root>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个loger。
 	 -->
 	<!-- Spring 로그 -->
-	<logger name="org.springframework" level="DEBUG">
+	<logger name="org.springframework" level="ERROR">
 		<appender-ref ref="Console" />
 <!-- 		<appender-ref ref="RollingFile" /> -->
 	</logger>
