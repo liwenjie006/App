@@ -1,6 +1,7 @@
 package lwj.app.config.init;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -146,21 +147,24 @@ public class AppStartRunner implements ApplicationRunner {
 		// 登录国际化信息（只限中文）
 		Yaml yaml = new Yaml();
 		URL url = getClass().getResource("messages.yml");
-        if (url != null) {
-        	String lanText = yaml.load(new FileInputStream(url.getFile()));
-        	String[] lans = lanText.split(SPLIT);
-        	for (String lan : lans) {
-        		Lan lanTmp = lanRepository.findOneByLanId(lan);
-        		if (null == lanTmp) {
-        			lanTmp = new Lan();
-        			lanTmp.setLanId(lan);
-        			lanTmp.setLanNm(lan);
-        			lanTmp.setLanguage(zhCode);
-        			lanTmp.setInUser(account);
-        			lanTmp.setInDtm(new Date());
-        			lanTmp.setInIp(IP);
-        			
-        			lanRepository.save(lanTmp);
+        if (null != url) {
+        	InputStream is = new FileInputStream(url.getFile());
+        	if (null != is) {
+        		String lanText = yaml.load(is);
+        		String[] lans = lanText.split(SPLIT);
+        		for (String lan : lans) {
+        			Lan lanTmp = lanRepository.findOneByLanId(lan);
+        			if (null == lanTmp) {
+        				lanTmp = new Lan();
+        				lanTmp.setLanId(lan);
+        				lanTmp.setLanNm(lan);
+        				lanTmp.setLanguage(zhCode);
+        				lanTmp.setInUser(account);
+        				lanTmp.setInDtm(new Date());
+        				lanTmp.setInIp(IP);
+        				
+        				lanRepository.save(lanTmp);
+        			}
         		}
         	}
         }
