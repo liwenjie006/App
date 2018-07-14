@@ -168,7 +168,6 @@ public class AppStartRunner implements ApplicationRunner {
         		}
         	}
         }
-		
 				
 		// 登录事件类型公用代码
 		Code codeAction = codeRepository.findOneByName("事件类型");

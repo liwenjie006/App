@@ -1,5 +1,6 @@
 package lwj.app;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
@@ -46,7 +47,7 @@ public class AppLogin {
 	 * @return
 	 */
 	@RequestMapping("/v/login")
-	public String login(@RequestHeader("User-Agent") String useAgent) throws Exception {
+	public String login(@RequestHeader("User-Agent") String useAgent, Model model) {
 		// 判断是否为手机浏览器
 		if (BrowserUtil.isMoblie(useAgent)) {
 			return "/mobile/login";
@@ -60,7 +61,7 @@ public class AppLogin {
 	 * @return
 	 */
 	@RequestMapping("/loginFailure")
-	public String loginFailure(Model model, HttpSession session) throws Exception {
+	public String loginFailure(Model model, HttpSession session) {
 		log.print("loginFailure");
 		model.addAttribute("failure", null == session.getAttribute("SPRING_SECURITY_LAST_EXCEPTION") ? false : true);
 		return "main/login";
@@ -69,6 +70,7 @@ public class AppLogin {
 	/**
 	 * 登录成功
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("/loginSuccess")
 	public String loginSuccess(History history, Model model) throws Exception {
@@ -94,6 +96,7 @@ public class AppLogin {
 	/**
 	 * 登出
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("/logout")
 	public String logout(History history, @SessionAttribute("sa_account") Account account) throws Exception {
